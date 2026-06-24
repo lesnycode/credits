@@ -28,6 +28,9 @@
 <div class="pf">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&display=swap');
+/* Headline font — same family as the main site podlesnytwins.com (Tilda 'SaarSP') */
+@font-face{font-family:'SaarSP';src:url('https://static.tildacdn.com/tild6565-6366-4065-b536-663938373766/SaarSPDemo.WOFF') format('woff');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'SaarSP';src:url('https://static.tildacdn.com/tild6330-3266-4634-a532-316339613139/LiteralBold.WOFF') format('woff');font-weight:600;font-style:normal;font-display:swap}
 .pf{font-family:'Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:#1a1a19;color:#fff;padding:48px 20px 140px;max-width:1180px;margin:0 auto;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
 .pf *{box-sizing:border-box}
 .pf .pfnav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:18px;margin-bottom:38px;border-bottom:1px solid rgba(255,255,255,.09)}
@@ -44,10 +47,10 @@
 .pf .pfnum{font-size:clamp(34px,8vw,86px);font-weight:800;letter-spacing:-.02em;line-height:1;color:#fff}
 .pf .pfnum b{color:#cf2c04;font-weight:800}
 .pf .pfcap{font-size:clamp(13px,2.4vw,20px);font-weight:700;color:#e6dede;margin-top:10px}
-.pf h1{font-size:clamp(34px,6vw,58px);font-weight:600;line-height:1;letter-spacing:-.02em;margin:14px 0 12px}
+.pf h1{font-family:'SaarSP',Arial,sans-serif;font-size:clamp(34px,6vw,58px);font-weight:400;line-height:.95;letter-spacing:0;margin:14px 0 12px}
 .pf .sub{font-size:16px;font-weight:700;color:#d8d0d0;max-width:520px;line-height:1.5;margin:0 0 32px}
 .pf .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
-.pf .f{background:transparent;color:#cfc9c9;border:1px solid #34332f;border-radius:40px;padding:9px 20px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+.pf .f{background:transparent;color:#cfc9c9;border:1px solid #34332f;border-radius:2px;padding:9px 20px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
 .pf .f:hover{border-color:#cf2c04;color:#fff}
 .pf .f.active{background:#cf2c04;color:#ffffff;border-color:#cf2c04;font-weight:700}
 .pf .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
@@ -58,7 +61,7 @@
 .pf .tile:hover .ov{opacity:1}
 .pf .pl{width:54px;height:54px;border-radius:50%;background:#cf2c04;color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:20px;font-style:normal;padding-left:4px}
 .pf .meta{position:absolute;left:0;right:0;bottom:0;padding:14px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.85));display:flex;flex-direction:column;gap:1px}
-.pf .art{color:#ff6a3c;font-size:12px;font-weight:700;letter-spacing:.2px}
+.pf .art{color:#cf2c04;font-size:12px;font-weight:700;letter-spacing:.2px}
 .pf .trk{font-size:15px;font-weight:700;line-height:1.15;margin-top:1px}
 .pf .yr{font-size:11px;font-weight:500;color:#9a9292;margin-top:2px}
 .pf .tile.hide{display:none}
@@ -115,11 +118,11 @@
 .pf .abox{background:#1f1f1e;border:1px solid #34332f;border-radius:16px;max-width:460px;width:100%;max-height:82vh;overflow:auto;padding:22px 22px 14px}
 .pf .ahead{display:flex;gap:14px;align-items:center;margin-bottom:8px}
 .pf .ahead img{width:74px;height:74px;border-radius:8px;object-fit:cover}
-.pf .aart{color:#ff6a3c;font-size:13px;font-weight:700}
+.pf .aart{color:#cf2c04;font-size:13px;font-weight:700}
 .pf .aalb{font-size:18px;font-weight:700;line-height:1.15;margin:2px 0}
 .pf .acnt{font-size:12px;color:#9a9292}
 .pf .aclose{position:sticky;top:0;float:right;background:transparent;border:0;color:#8f8888;font-size:26px;cursor:pointer;line-height:1}
-.pf .arelh{color:#ff6a3c;font-size:12px;font-weight:700;margin:16px 0 2px;text-transform:uppercase;letter-spacing:.4px}
+.pf .arelh{color:#cf2c04;font-size:12px;font-weight:700;margin:16px 0 2px;text-transform:uppercase;letter-spacing:.4px}
 .pf .arow{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;background:transparent;border:0;border-top:1px solid #2a2a28;color:#fff;font:inherit;text-align:left;padding:13px 4px;cursor:pointer;transition:.12s}
 .pf .arow:hover{background:#262625}
 .pf .atrk{font-size:15px;font-weight:600}
@@ -141,15 +144,7 @@
     <a class="pflink" href="https://podlesnytwins.com">&#1050;&#1091;&#1088;&#1089; <span class="ar">&#8594;</span></a>
   </div>
 
-  <div class="lead">Mixing</div>
   <h1>Podlesny Twins Credits</h1>
-
-  <div class="pfhero" id="pfhero" style="background-image:url('https://static.tildacdn.com/tild3937-3163-4366-b936-353163623434/ZNR02862-tilda.jpg')">
-    <div class="pfcount">
-      <div class="pfnum"><span>2&#160;000&#160;000&#160;000</span><b>+</b></div>
-      <div class="pfcap">&#1073;&#1086;&#1083;&#1077;&#1077; 2 &#1084;&#1080;&#1083;&#1083;&#1080;&#1072;&#1088;&#1076;&#1086;&#1074; &#1087;&#1088;&#1086;&#1089;&#1083;&#1091;&#1096;&#1080;&#1074;&#1072;&#1085;&#1080;&#1081;</div>
-    </div>
-  </div>
 
   <div class="filters">
       <button class="f active" data-f="ALL" onclick="filt(this)">&#1042;&#1089;&#1077;</button>
