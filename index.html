@@ -111,11 +111,6 @@
 .pf .seo-intro{font-size:15px;line-height:1.6;color:#b3aaaa;max-width:640px;margin:2px 0 30px}
 .pf .tile.album .meta{background:linear-gradient(transparent,rgba(0,0,0,.92))}
 .pf .abadge{position:absolute;top:0;right:0;background:rgba(0,0,0,.5);color:#d8d0d0;font-size:9px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:4px 7px;border-radius:0;z-index:20}
-.pf .aws{position:absolute;top:0;left:0;display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:22;pointer-events:none}
-.pf .aw{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 7px;font-size:10px;font-weight:800;letter-spacing:.04em;line-height:1;text-transform:uppercase}
-.pf .aw.gram{background:rgba(0,0,0,.42);padding:3px 4px;height:auto;border-radius:3px;box-shadow:0 1px 7px rgba(0,0,0,.4)}
-.pf .aw.gram img{height:30px;width:auto;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
-.pf .aw.top1{background:#cf2c04;color:#fff}
 .pf .tile.fan{overflow:visible;background:transparent}
 .pf .deck{position:absolute;inset:0}
 .pf .fcard{position:absolute;inset:0;border-radius:10px;background:#262625 center/cover no-repeat;border:2px solid #1a1a19;transition:transform .4s cubic-bezier(.2,.8,.25,1),box-shadow .4s;transform-origin:bottom center;box-shadow:0 2px 8px rgba(0,0,0,.45)}
@@ -144,10 +139,6 @@
 .pf .fcard{transform:none !important;border:0;box-shadow:none !important;border-radius:10px}
 .pf .fcard.f1,.pf .fcard.f2,.pf .fcard.f3{display:none}
 .pf .abadge{font-size:8px;padding:3px 6px;top:0;right:0}
-.pf .aws{gap:3px}
-.pf .aw{height:17px;padding:0 5px;font-size:8px;gap:3px}
-.pf .aw.gram{padding:2px 3px}
-.pf .aw.gram img{height:24px}
 .pf .abox{padding:18px 16px 12px}
 .pf .ahead img{width:60px;height:60px}
 .pf .aalb{font-size:16px}
@@ -372,20 +363,6 @@ function filt(b){
     var n=document.querySelectorAll(sel).length;
     if(n){ var s=document.createElement('span'); s.className='fc'; s.textContent=n; f.appendChild(s); }
   });
-  /* Award tags on tiles */
-  var GRAM='<img src="gramophone.png" alt="" width="22" height="30">';
-  document.querySelectorAll('.pf .tile[data-aw]').forEach(function(t){
-    var aw=(t.dataset.aw||'').split(' ').filter(Boolean); if(!aw.length) return;
-    var box=document.createElement('span'); box.className='aws';
-    aw.forEach(function(k){
-      var s=document.createElement('span');
-      if(k==='GRAM'){ s.className='aw gram'; s.title='Золотой граммофон'; s.setAttribute('aria-label','Золотой граммофон'); s.innerHTML=GRAM; }
-      else if(k==='TOP1'){ s.className='aw top1'; s.title='№1 в чартах'; s.setAttribute('aria-label','Первое место в чартах'); s.textContent='TOP-1'; }
-      else return;
-      box.appendChild(s);
-    });
-    if(box.childNodes.length) t.appendChild(box);
-  });
 })();
 </script>
 <script>
@@ -399,12 +376,9 @@ function filt(b){
   var W=0,H=0,t=0,raf=0,level=0,levelTarget=0;
   var mouse={x:0,y:0}, target={x:0,y:0};
   var mInfl=reduce?0:28, mRadius=280, smooth=0.1;
-  var waves=[
-    {o:0,        a:16,f:0.012,c:'#cf2c04',op:0.55,b:22},
-    {o:Math.PI/2,a:22,f:0.009,c:'#e3401a',op:0.40,b:26},
-    {o:Math.PI,  a:13,f:0.014,c:'#ff7a3c',op:0.32,b:20},
-    {o:Math.PI*1.5,a:18,f:0.008,c:'#ffffff',op:0.13,b:16},
-    {o:Math.PI*2,a:11,f:0.016,c:'#cf2c04',op:0.22,b:14}
+  var lines=[
+    {o:0.9, a:9, f:0.011, c:'#4a4644', op:0.85, w:1.2},
+    {o:0,   a:15,f:0.013, c:'#cf2c04', op:1,    w:2.2}
   ];
   function resize(){
     var r=hero.getBoundingClientRect(); W=r.width; H=r.height;
@@ -412,25 +386,25 @@ function filt(b){
     ctx.setTransform(dpr,0,0,dpr,0,0);
     mouse.x=target.x=W/2; mouse.y=target.y=H/2;
   }
-  function drawWave(w){
+  function drawLine(w){
     ctx.save(); ctx.beginPath();
-    var a=w.a*(0.4+0.6*level);
-    for(var x=0;x<=W;x+=3){
+    var a=w.a*(0.35+0.65*level);
+    for(var x=0;x<=W;x+=2){
       var dx=x-mouse.x, dy=H/2-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
       var infl=Math.max(0,1-dist/mRadius);
-      var me=infl*mInfl*Math.sin(t*0.001+x*0.01+w.o)*level;
-      var y=H/2 + Math.sin(x*w.f+t*0.002+w.o)*a + Math.sin(x*w.f*0.4+t*0.003)*(a*0.45) + me;
+      var me=infl*mInfl*Math.sin(t*0.0012+x*0.012+w.o)*level;
+      var y=H/2 + Math.sin(x*w.f+t*0.0022+w.o)*a + Math.sin(x*w.f*0.5+t*0.0031+w.o)*(a*0.4) + me;
       x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
     }
-    ctx.lineWidth=2.5; ctx.strokeStyle=w.c; ctx.globalAlpha=w.op*level;
-    ctx.shadowBlur=w.b; ctx.shadowColor=w.c; ctx.stroke(); ctx.restore();
+    ctx.lineWidth=w.w; ctx.strokeStyle=w.c; ctx.globalAlpha=w.op*level;
+    ctx.lineJoin='round'; ctx.lineCap='round'; ctx.shadowBlur=0; ctx.stroke(); ctx.restore();
   }
   function render(){
     var g=ctx.createLinearGradient(0,0,0,H);
-    g.addColorStop(0,'#1c1b1a'); g.addColorStop(1,'#131312');
+    g.addColorStop(0,'#1a1918'); g.addColorStop(1,'#121211');
     ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
     ctx.globalAlpha=1; ctx.shadowBlur=0;
-    if(level>0.003) waves.forEach(drawWave);
+    if(level>0.003) lines.forEach(drawLine);
   }
   function frame(){
     t+=1;
