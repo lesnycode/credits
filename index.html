@@ -49,11 +49,15 @@
 .pf .pfnum b{color:#cf2c04;font-weight:800}
 .pf .pfcap{font-size:clamp(13px,2.4vw,20px);font-weight:700;color:#e6dede;margin-top:10px}
 .pf h1{font-family:'SaarSP',Arial,sans-serif;font-size:clamp(34px,6vw,58px);font-weight:400;line-height:.95;letter-spacing:0;margin:14px 0 12px}
+.pf .hero{position:relative;border-radius:14px;overflow:hidden;margin:6px 0 32px;min-height:clamp(74px,13vw,120px);display:flex;align-items:center;justify-content:center;background:#161514}
+.pf .hero canvas{position:absolute;inset:0;display:block}
+.pf .hero h1{position:relative;z-index:2;margin:0;text-align:center;padding:0 20px;text-shadow:0 2px 36px rgba(0,0,0,.6)}
 .pf .sub{font-size:16px;font-weight:700;color:#d8d0d0;max-width:520px;line-height:1.5;margin:0 0 32px}
-.pf .filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
-.pf .f{background:#262625;color:#b6afaf;border:0;border-radius:0;padding:12px 22px;font:inherit;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .15s,color .15s}
-.pf .f:hover{background:#34332f;color:#fff}
-.pf .f.active{background:#cf2c04;color:#fff}
+.pf .filters{display:flex;flex-wrap:wrap;align-items:baseline;gap:24px;margin-bottom:26px}
+.pf .f{background:none;border:0;border-radius:0;padding:0 0 8px;font:inherit;font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#b6afaf;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+.pf .f:hover{color:#fff}
+.pf .f.active{color:#cf2c04;border-bottom-color:#cf2c04}
+.pf .f .fc{margin-left:6px;font-size:11px;font-weight:600;color:#8f8888;letter-spacing:0;text-transform:none}
 .pf .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
 .pf .tile{position:relative;border:0;padding:0;background:#262625;border-radius:10px;overflow:hidden;cursor:pointer;text-align:left;font:inherit;color:#fff;aspect-ratio:1/1;display:block}
 .pf .tile img{width:100%;height:100%;object-fit:cover;display:block;transition:.3s;filter:brightness(.92)}
@@ -63,8 +67,9 @@
 .pf .pl{width:54px;height:54px;border-radius:50%;background:#cf2c04;color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:20px;font-style:normal;padding-left:4px}
 .pf .meta{position:absolute;left:0;right:0;bottom:0;padding:14px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.85));display:flex;flex-direction:column;gap:1px}
 .pf .art{color:#cf2c04;font-size:12px;font-weight:700;letter-spacing:.2px}
-.pf .trk{font-size:15px;font-weight:700;line-height:1.15;margin-top:1px}
-.pf .yr{font-size:11px;font-weight:500;color:#9a9292;margin-top:2px}
+.pf .trk{font-family:'SaarSP',Arial,sans-serif;font-size:16px;font-weight:400;letter-spacing:.01em;line-height:1.08;margin-top:3px}
+.pf .yr{font-size:11px;font-weight:500;color:#9a9292;margin-top:2px;opacity:0;transition:opacity .2s}
+.pf .tile:hover .yr{opacity:1}
 .pf .tile.hide{display:none}
 .pf .pffoot{margin-top:64px;padding-top:42px;border-top:1px solid rgba(255,255,255,.09);text-align:center}
 .pf .pfcontact{position:relative;display:inline-block}
@@ -90,12 +95,12 @@
 .pf .pfcount{padding:20px 18px}
 .pf .lead{font-size:17px}
 .pf h1{font-size:32px;margin:10px 0 16px}
-.pf .filters{gap:7px;margin-bottom:20px}
-.pf .f{padding:10px 16px;font-size:12px}
+.pf .filters{gap:16px;margin-bottom:20px}
+.pf .f{padding:0 0 7px;font-size:12px}
 .pf .grid{grid-template-columns:1fr 1fr;gap:9px}
 .pf .meta{padding:9px 9px 8px}
 .pf .art{font-size:10px}
-.pf .trk{font-size:12px;line-height:1.1}
+.pf .trk{font-size:13px;line-height:1.04;margin-top:2px}
 .pf .yr{font-size:10px}
 .pf .pl{width:44px;height:44px;font-size:16px}
 .pf .player{padding:8px 10px}
@@ -145,7 +150,10 @@
     <a class="pflink" href="https://podlesnytwins.com">&#1050;&#1091;&#1088;&#1089; <span class="ar">&#8594;</span></a>
   </div>
 
-  <h1>Podlesny Twins Credits</h1>
+  <div class="hero" id="hero">
+    <canvas id="waves" aria-hidden="true"></canvas>
+    <h1>Podlesny Twins Credits</h1>
+  </div>
 
   <div class="filters">
       <button class="f active" data-f="ALL" onclick="filt(this)">&#1042;&#1089;&#1077;</button>
@@ -330,6 +338,83 @@ function filt(b){
     t.classList.toggle('hide', f!=='ALL' && t.dataset.g!==f);
   });
 }
+</script>
+<script>
+/* Genre filter counts */
+(function(){
+  document.querySelectorAll('.pf .filters .f[data-f]').forEach(function(f){
+    var g=f.dataset.f; if(g==='ALL') return;
+    var n=document.querySelectorAll('.pf .tile[data-g="'+g+'"]').length;
+    if(n){ var s=document.createElement('span'); s.className='fc'; s.textContent=n; f.appendChild(s); }
+  });
+})();
+</script>
+<script>
+/* Glowy reactive waves — vanilla port of the React canvas hero, themed to the brand */
+(function(){
+  var hero=document.getElementById('hero'), canvas=document.getElementById('waves'), player=document.getElementById('player');
+  if(!hero||!canvas) return;
+  var ctx=canvas.getContext('2d'); if(!ctx) return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var W=0,H=0,t=0,raf=0,level=0,levelTarget=0;
+  var mouse={x:0,y:0}, target={x:0,y:0};
+  var mInfl=reduce?0:28, mRadius=280, smooth=0.1;
+  var waves=[
+    {o:0,        a:16,f:0.012,c:'#cf2c04',op:0.55,b:22},
+    {o:Math.PI/2,a:22,f:0.009,c:'#e3401a',op:0.40,b:26},
+    {o:Math.PI,  a:13,f:0.014,c:'#ff7a3c',op:0.32,b:20},
+    {o:Math.PI*1.5,a:18,f:0.008,c:'#ffffff',op:0.13,b:16},
+    {o:Math.PI*2,a:11,f:0.016,c:'#cf2c04',op:0.22,b:14}
+  ];
+  function resize(){
+    var r=hero.getBoundingClientRect(); W=r.width; H=r.height;
+    canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    mouse.x=target.x=W/2; mouse.y=target.y=H/2;
+  }
+  function drawWave(w){
+    ctx.save(); ctx.beginPath();
+    var a=w.a*(0.4+0.6*level);
+    for(var x=0;x<=W;x+=3){
+      var dx=x-mouse.x, dy=H/2-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
+      var infl=Math.max(0,1-dist/mRadius);
+      var me=infl*mInfl*Math.sin(t*0.001+x*0.01+w.o)*level;
+      var y=H/2 + Math.sin(x*w.f+t*0.002+w.o)*a + Math.sin(x*w.f*0.4+t*0.003)*(a*0.45) + me;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.lineWidth=2.5; ctx.strokeStyle=w.c; ctx.globalAlpha=w.op*level;
+    ctx.shadowBlur=w.b; ctx.shadowColor=w.c; ctx.stroke(); ctx.restore();
+  }
+  function render(){
+    var g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#1c1b1a'); g.addColorStop(1,'#131312');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1; ctx.shadowBlur=0;
+    if(level>0.003) waves.forEach(drawWave);
+  }
+  function frame(){
+    t+=1;
+    level+=(levelTarget-level)*0.06;
+    mouse.x+=(target.x-mouse.x)*smooth; mouse.y+=(target.y-mouse.y)*smooth;
+    render();
+    if(levelTarget===0 && level<0.004){ level=0; render(); raf=0; return; }
+    raf=requestAnimationFrame(frame);
+  }
+  function run(){ if(!raf) raf=requestAnimationFrame(frame); }
+  function setPlaying(p){ levelTarget=p?1:0; if(!reduce) run(); }
+  resize();
+  window.addEventListener('resize',function(){ resize(); render(); });
+  if(!reduce){
+    window.addEventListener('mousemove',function(e){ var r=canvas.getBoundingClientRect(); target.x=e.clientX-r.left; target.y=e.clientY-r.top; });
+    window.addEventListener('mouseleave',function(){ target.x=W/2; target.y=H/2; });
+  }
+  if(player){
+    new MutationObserver(function(){ setPlaying(player.classList.contains('on')); }).observe(player,{attributes:true,attributeFilter:['class']});
+    if(player.classList.contains('on')) setPlaying(true);
+  }
+  render();
+})();
 </script>
 </div>
 </body>
