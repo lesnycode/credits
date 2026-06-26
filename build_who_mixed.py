@@ -210,48 +210,156 @@ def render_hub(tracks: list[dict]) -> str:
     by_artist: dict[str, list[dict]] = {}
     for tr in tracks:
         by_artist.setdefault(tr["artist"], []).append(tr)
-    sections = []
-    for artist in sorted(by_artist, key=str.lower):
-        items = sorted(by_artist[artist], key=lambda x: x["title"].lower())
-        lis = "".join(
-            f'<li><a href="/track/{esc(tr["slug"])}/">{esc(tr["title"])}</a></li>'
-            for tr in items
-        )
-        sections.append(f"<h2>{esc(artist)}</h2><ul>{lis}</ul>")
 
+    artists = sorted(by_artist, key=str.lower)
+    blocks = []
+    prev_letter = ""
+    for artist in artists:
+        items = sorted(by_artist[artist], key=lambda x: x["title"].lower())
+        letter = (artist[0].upper() if artist else "#")
+        letter_band = ""
+        if letter != prev_letter:
+            prev_letter = letter
+            letter_band = f'<div class="letter" data-letter="{esc(letter)}">{esc(letter)}</div>'
+        rows = []
+        for tr in items:
+            yr = tr.get("year", "")
+            yr_html = (
+                f'<span class="tyr">{esc(yr)}</span>'
+                if yr and yr != "альбом"
+                else ""
+            )
+            rows.append(
+                f'<a class="trow" href="/track/{esc(tr["slug"])}/" '
+                f'data-q="{esc((tr["title"] + " " + artist).lower())}">'
+                f'<img src="{esc(tr["img"])}" alt="" loading="lazy" width="44" height="44">'
+                f'<span class="tname">{esc(tr["title"])}</span>'
+                f'{yr_html}<span class="tgo" aria-hidden="true">→</span></a>'
+            )
+        rows = "".join(rows)
+        aid = slugify(artist) or "artist"
+        blocks.append(
+            f'{letter_band}<section class="ablock" id="{esc(aid)}" data-artist="{esc(artist.lower())}">'
+            f'<header class="ahead"><h2>{esc(artist)}</h2>'
+            f'<span class="acnt">{len(items)}</span></header>'
+            f'<div class="tlist">{rows}</div></section>'
+        )
+
+    seen_l: set[str] = set()
+    jump_links = []
+    for a in artists:
+        L = a[0].upper() if a else "#"
+        if L in seen_l:
+            continue
+        seen_l.add(L)
+        jump_links.append(
+            f'<a class="lj" href="#{esc(slugify(a) or "artist")}">{esc(L)}</a>'
+        )
+
+    catalog = "".join(blocks)
     return f"""<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Кто свел — все треки Podlesny Twins</title>
-<meta name="description" content="Полный список треков, которые свели и смастерили Podlesny Twins.">
+<meta name="description" content="Полный список треков, которые свели и смастерили Podlesny Twins — сведение и мастеринг.">
 <link rel="canonical" href="{SITE}/track/">
 <link rel="icon" type="image/png" href="{SITE}/favicon.png">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;700&display=swap');
-body{{margin:0;background:#1a1a19;color:#fff;font-family:'Work Sans',-apple-system,sans-serif}}
-.wrap{{max-width:900px;margin:0 auto;padding:40px 20px 80px}}
-a{{color:#cf2c04;text-decoration:none}}
-a:hover{{text-decoration:underline}}
-.nav{{display:flex;justify-content:space-between;margin-bottom:28px;font-size:14px;font-weight:600}}
-h1{{font-size:34px;margin:0 0 10px}}
-.sub{{color:#9a9292;margin:0 0 32px;line-height:1.5}}
-h2{{color:#cf2c04;font-size:15px;margin:28px 0 10px;text-transform:uppercase;letter-spacing:.4px}}
-ul{{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 20px}}
-li{{font-size:14px;line-height:1.4}}
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&display=swap');
+@font-face{{font-family:'SaarSP';src:url('https://static.tildacdn.com/tild6565-6366-4065-b536-663938373766/SaarSPDemo.WOFF') format('woff');font-weight:400;font-display:swap}}
+*{{box-sizing:border-box}}
+body{{margin:0;background:#1a1a19;color:#fff;font-family:'Work Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased}}
+.pf{{max-width:1180px;margin:0 auto;padding:48px 20px 80px}}
+a{{color:inherit;text-decoration:none}}
+.pfnav{{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;margin-bottom:32px;border-bottom:1px solid rgba(255,255,255,.09)}}
+.pflink{{color:#cfc9c9;font-weight:600;font-size:14px;transition:.15s}}
+.pflink:hover{{color:#fff}}
+h1{{font-family:'SaarSP',Arial,sans-serif;font-size:clamp(32px,5vw,52px);font-weight:400;line-height:.95;margin:0 0 12px}}
+.lead{{font-size:15px;color:#9a9292;margin:0 0 24px;line-height:1.5}}
+.toolbar{{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:28px}}
+.search{{flex:1;min-width:200px;background:#262625;border:1px solid #34332f;border-radius:40px;padding:12px 18px;color:#fff;font:inherit;font-size:15px;outline:none}}
+.search::placeholder{{color:#7a7474}}
+.search:focus{{border-color:#cf2c04}}
+.stat{{font-size:13px;font-weight:700;color:#cf2c04;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}}
+.jump{{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}}
+.lj{{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 8px;border-radius:8px;background:#262625;border:1px solid #34332f;font-size:12px;font-weight:700;color:#b6afaf;transition:.15s}}
+.lj:hover{{color:#fff;border-color:#cf2c04}}
+.catalog{{display:flex;flex-direction:column;gap:14px}}
+.letter{{font-size:11px;font-weight:800;letter-spacing:.12em;color:#cf2c04;text-transform:uppercase;margin:18px 0 4px;padding-left:2px}}
+.letter:first-child{{margin-top:0}}
+.ablock{{background:#262625;border:1px solid #34332f;border-radius:14px;overflow:hidden}}
+.ahead{{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:16px 18px 12px;border-bottom:1px solid #34332f}}
+.ahead h2{{margin:0;font-size:15px;font-weight:700;color:#cf2c04;letter-spacing:.02em}}
+.acnt{{font-size:11px;font-weight:700;color:#9a9292;background:#1f1f1e;padding:4px 9px;border-radius:20px;white-space:nowrap}}
+.tlist{{display:flex;flex-direction:column}}
+.trow{{display:grid;grid-template-columns:44px 1fr auto 20px;align-items:center;gap:12px;padding:11px 18px;border-top:1px solid #2a2a28;transition:background .12s}}
+.trow:first-child{{border-top:0}}
+.trow:hover{{background:#2e2e2d}}
+.trow img{{width:44px;height:44px;border-radius:6px;object-fit:cover;display:block}}
+.tname{{font-size:15px;font-weight:600;line-height:1.25}}
+.tyr{{font-size:12px;color:#9a9292;font-weight:500}}
+.tgo{{color:#cf2c04;font-size:14px;opacity:0;transform:translateX(-4px);transition:.15s}}
+.trow:hover .tgo{{opacity:1;transform:none}}
+.ablock.hide,.trow.hide,.letter.hide{{display:none}}
+.empty{{display:none;text-align:center;padding:48px 20px;color:#9a9292;font-size:15px}}
+.empty.on{{display:block}}
+@media (max-width:600px){{
+.pf{{padding:30px 14px 60px}}
+.trow{{grid-template-columns:40px 1fr auto;padding:10px 14px;gap:10px}}
+.trow img{{width:40px;height:40px}}
+.tgo{{display:none}}
+.jump{{gap:5px}}
+.lj{{min-width:28px;height:28px;font-size:11px}}
+}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="nav">
-    <a href="{SITE}/">← Портфолио</a>
-    <a href="https://podlesnytwins.com">Курс →</a>
+<div class="pf">
+  <div class="pfnav">
+    <a class="pflink" href="{SITE}/">← Портфолио</a>
+    <a class="pflink" href="https://podlesnytwins.com">Курс →</a>
   </div>
-  <h1>Кто свел — все треки</h1>
-  <p class="sub">{len(tracks)} треков · Podlesny Twins — сведение и мастеринг</p>
-  {''.join(sections)}
+  <h1>Кто свел</h1>
+  <p class="lead">Все треки Podlesny Twins — Павел и Антон Подлесные, сведение и мастеринг.</p>
+  <div class="toolbar">
+    <input class="search" id="q" type="search" placeholder="Найти трек или артиста…" autocomplete="off">
+    <span class="stat">{len(tracks)} треков · {len(artists)} артистов</span>
+  </div>
+  <nav class="jump" aria-label="По алфавиту">{"".join(jump_links)}</nav>
+  <div class="catalog" id="catalog">{catalog}</div>
+  <p class="empty" id="empty">Ничего не найдено</p>
 </div>
+<script>
+(function(){{
+  var q=document.getElementById('q'),cat=document.getElementById('catalog'),em=document.getElementById('empty');
+  function norm(s){{return (s||'').toLowerCase().replace(/ё/g,'е');}}
+  function run(){{
+    var v=norm(q.value.trim()),any=false;
+    cat.querySelectorAll('.ablock').forEach(function(b){{
+      var show=false;
+      b.querySelectorAll('.trow').forEach(function(r){{
+        var ok=!v||norm(r.getAttribute('data-q')).indexOf(v)>=0||norm(b.getAttribute('data-artist')).indexOf(v)>=0;
+        r.classList.toggle('hide',!ok); if(ok) show=true;
+      }});
+      b.classList.toggle('hide',!show);
+      cat.querySelectorAll('.letter').forEach(function(l){{
+        var n=l.nextElementSibling;
+        if(n&&n.classList.contains('ablock')&&!n.classList.contains('hide')) l.classList.remove('hide');
+        else if(n&&n.classList.contains('ablock')) l.classList.add('hide');
+      }});
+      if(show) any=true;
+    }});
+    cat.querySelectorAll('.letter').forEach(function(l){{
+      var n=l.nextElementSibling;
+      l.classList.toggle('hide',!n||!n.classList.contains('ablock')||n.classList.contains('hide'));
+    }});
+    em.classList.toggle('on',!any);
+  }}
+  q.addEventListener('input',run);
+}})();
+</script>
 </body>
 </html>
 """
