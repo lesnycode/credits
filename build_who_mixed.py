@@ -206,6 +206,72 @@ h1{{font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0 0 16px;font-weight:8
 """
 
 
+def render_hub(tracks: list[dict]) -> str:
+    by_artist: dict[str, list[dict]] = {}
+    for tr in tracks:
+        by_artist.setdefault(tr["artist"], []).append(tr)
+    sections = []
+    for artist in sorted(by_artist, key=str.lower):
+        items = sorted(by_artist[artist], key=lambda x: x["title"].lower())
+        lis = "".join(
+            f'<li><a href="/track/{esc(tr["slug"])}/">{esc(tr["title"])}</a></li>'
+            for tr in items
+        )
+        sections.append(f"<h2>{esc(artist)}</h2><ul>{lis}</ul>")
+
+    return f"""<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кто свел — все треки Podlesny Twins</title>
+<meta name="description" content="Полный список треков, которые свели и смастерили Podlesny Twins.">
+<link rel="canonical" href="{SITE}/track/">
+<link rel="icon" type="image/png" href="{SITE}/favicon.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;700&display=swap');
+body{{margin:0;background:#1a1a19;color:#fff;font-family:'Work Sans',-apple-system,sans-serif}}
+.wrap{{max-width:900px;margin:0 auto;padding:40px 20px 80px}}
+a{{color:#cf2c04;text-decoration:none}}
+a:hover{{text-decoration:underline}}
+.nav{{display:flex;justify-content:space-between;margin-bottom:28px;font-size:14px;font-weight:600}}
+h1{{font-size:34px;margin:0 0 10px}}
+.sub{{color:#9a9292;margin:0 0 32px;line-height:1.5}}
+h2{{color:#cf2c04;font-size:15px;margin:28px 0 10px;text-transform:uppercase;letter-spacing:.4px}}
+ul{{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 20px}}
+li{{font-size:14px;line-height:1.4}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="{SITE}/">← Портфолио</a>
+    <a href="https://podlesnytwins.com">Курс →</a>
+  </div>
+  <h1>Кто свел — все треки</h1>
+  <p class="sub">{len(tracks)} треков · Podlesny Twins — сведение и мастеринг</p>
+  {''.join(sections)}
+</div>
+</body>
+</html>
+"""
+
+
+def patch_index_footer(doc: str) -> str:
+    css = """
+.pf .seo-foot{margin:22px auto 0;font-size:12px;line-height:1.5}
+.pf .seo-foot a{color:#918b8b;font-weight:600}
+.pf .seo-foot a:hover{color:#cfc9c9}
+"""
+    if ".pf .seo-foot" not in doc:
+        doc = doc.replace("</style>", css + "</style>", 1)
+
+    foot = '<p class="seo-foot"><a href="/track/">Полный список треков</a></p>'
+    if foot not in doc:
+        doc = doc.replace('<p class="iadisc">', foot + "\n    " + '<p class="iadisc">', 1)
+    return doc
+
+
 def write_sitemap(tracks: list[dict]) -> None:
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
@@ -215,6 +281,12 @@ def write_sitemap(tracks: list[dict]) -> None:
         f"    <lastmod>{TODAY}</lastmod>",
         "    <changefreq>weekly</changefreq>",
         "    <priority>1.0</priority>",
+        "  </url>",
+        "  <url>",
+        f"    <loc>{SITE}/track/</loc>",
+        f"    <lastmod>{TODAY}</lastmod>",
+        "    <changefreq>weekly</changefreq>",
+        "    <priority>0.9</priority>",
         "  </url>",
     ]
     for tr in tracks:
@@ -235,7 +307,10 @@ def main() -> None:
     tracks = extract_tracks(doc)
     assign_slugs(tracks)
 
+    hub_file = TRACK_DIR / "index.html"
     if TRACK_DIR.exists():
+        if hub_file.is_file():
+            hub_file.unlink()
         for old in TRACK_DIR.iterdir():
             if old.is_dir():
                 for f in old.iterdir():
@@ -248,10 +323,14 @@ def main() -> None:
         out.mkdir(parents=True, exist_ok=True)
         (out / "index.html").write_text(render_page(tr), encoding="utf-8")
 
+    hub_file.write_text(render_hub(tracks), encoding="utf-8")
+    INDEX.write_text(patch_index_footer(doc), encoding="utf-8")
+
     write_sitemap(tracks)
     print(f"Сгенерировано страниц: {len(tracks)}")
+    print(f"Индекс: {SITE}/track/")
     print(f"Пример: {SITE}/track/{tracks[0]['slug']}/")
-    print(f"Sitemap обновлён: {len(tracks) + 1} URL")
+    print(f"Sitemap обновлён: {len(tracks) + 2} URL")
 
 
 if __name__ == "__main__":
