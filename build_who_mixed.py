@@ -263,7 +263,7 @@ def render_hub(tracks: list[dict]) -> str:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Кто свел — все треки Podlesny Twins</title>
-<meta name="description" content="Полный список треков, которые свели и смастерили Podlesny Twins — сведение и мастеринг.">
+<meta name="description" content="Хаски, ЛСП, NAVAI, T-Fest и другие — полный список треков, которые сводили Podlesny Twins (Павел и Антон Подлесные).">
 <link rel="canonical" href="{SITE}/track/">
 <link rel="icon" type="image/png" href="{SITE}/favicon.png">
 <style>
@@ -322,7 +322,7 @@ h1{{font-family:'SaarSP',Arial,sans-serif;font-size:clamp(32px,5vw,52px);font-we
     <a class="pflink" href="https://podlesnytwins.com">Курс →</a>
   </div>
   <h1>Кто свел</h1>
-  <p class="lead">Все треки Podlesny Twins — Павел и Антон Подлесные, сведение и мастеринг.</p>
+  <p class="lead">Хаски, ЛСП, NAVAI, T-Fest, 9mice — и ещё пара сотен треков. Здесь всё, что мы сводили и мастерили.</p>
   <div class="toolbar">
     <input class="search" id="q" type="search" placeholder="Найти трек или артиста…" autocomplete="off">
     <span class="stat">{len(tracks)} треков · {len(artists)} артистов</span>
