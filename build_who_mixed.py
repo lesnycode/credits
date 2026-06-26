@@ -25,6 +25,9 @@ TRANSLIT = {
 def esc(s: str) -> str:
     return html.escape(s, quote=True)
 
+def norm_art(s: str) -> str:
+    return re.sub(r'\s*;\s*', ', ', (s or '').strip())
+
 
 def slugify(*parts: str) -> str:
     raw = "-".join(parts).lower().replace("’", "'")
@@ -51,14 +54,14 @@ def extract_tracks(doc: str) -> list[dict]:
         re.S,
     )
     for tid, img, artist, title, year in tile_re.findall(doc):
-        artist = html.unescape(re.sub(r"<[^>]+>", "", artist))
+        artist = norm_art(html.unescape(re.sub(r"<[^>]+>", "", artist)))
         if tid in seen:
             continue
         seen.add(tid)
         tracks.append({
             "id": tid,
             "img": img,
-            "artist": html.unescape(artist),
+            "artist": artist,
             "title": html.unescape(title),
             "year": html.unescape(year),
         })
@@ -73,7 +76,7 @@ def extract_tracks(doc: str) -> list[dict]:
             tracks.append({
                 "id": tid,
                 "img": album["cover"],
-                "artist": album["artist"],
+                "artist": norm_art(album["artist"]),
                 "title": tr["title"],
                 "year": tr.get("year", ""),
             })
