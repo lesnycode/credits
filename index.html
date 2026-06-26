@@ -332,15 +332,15 @@ document.addEventListener('click',function(){
   var m=document.getElementById('pfmenu'),c=document.getElementById('pfcta');
   if(m){ m.classList.remove('on'); c.classList.remove('on'); }
 });
-var spotifyCtrl=null, pendingUri=null, curTile=null;
+var spotifyCtrl=null, pendingUri=null, curTile=null, wantPlay=false;
 var IC_PLAY='&#9654;', IC_PAUSE='<span class="pb"></span><span class="pb"></span>';
 function setIcon(el,html){ if(!el) return; var pl=el.querySelector('.pl'); if(pl) pl.innerHTML=html; }
 function syncIcon(isPlaying){ if(!curTile) return; curTile.classList.toggle('paused',!isPlaying); setIcon(curTile,isPlaying?IC_PAUSE:IC_PLAY); }
 window.onSpotifyIframeApiReady=function(API){
   API.createController(document.getElementById('pframe'),{width:'100%',height:80,uri:''},function(c){
     spotifyCtrl=c;
-    c.addListener('playback_update',function(e){ if(e&&e.data) syncIcon(!e.data.isPaused); });
-    if(pendingUri){ c.loadUri(pendingUri); c.play(); pendingUri=null; }
+    c.addListener('playback_update',function(e){ if(e&&e.data){ syncIcon(!e.data.isPaused); if(wantPlay&&e.data.isPaused){ wantPlay=false; c.resume(); } } });
+    if(pendingUri){ wantPlay=true; c.loadUri(pendingUri); c.play(); pendingUri=null; }
   });
 };
 function play(el){
@@ -349,7 +349,7 @@ function play(el){
   curTile=el; el.classList.add('playing'); setIcon(el,IC_PAUSE);
   var uri='spotify:track:'+el.dataset.id;
   document.getElementById('player').classList.add('on');
-  if(spotifyCtrl){ spotifyCtrl.loadUri(uri); spotifyCtrl.play(); }
+  if(spotifyCtrl){ wantPlay=true; spotifyCtrl.loadUri(uri); spotifyCtrl.play(); }
   else { pendingUri=uri; }
 }
 function stop(){
