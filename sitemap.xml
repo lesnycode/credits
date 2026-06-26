@@ -7,126 +7,6 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/pizza-zoloto/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/pizza-navai-grustnyy-ekonom/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/pizza-skorost-pulsa/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/pizza-zanovo/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/pizza-sny/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/pizza-leonid-agutin-naplevat-na-vseh/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/pizza-dose-nochi-naprolyot/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/pizza-let-it-be/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/dima-bilan-poobeschay/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/anna-asti-dima-bilan-epilog/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/dima-bilan-vector-v/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/macan-navai-neuzheli-eto-vse-lyubov/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/t-fest-davay-skonnektimsya/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/t-fest-sovri-mne/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/t-fest-inogda/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/t-fest-razbudi-menya/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/t-fest-katya-miltey-vstretimsya-zavtra/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/t-fest-11-pm-in-berlin/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/t-fest-kyol-heaven/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://credits.podlesnytwins.com/track/andrey-katikov-ty-moy-ray/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -151,7 +31,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/andrey-katikov-lsp-odinokimi/</loc>
+    <loc>https://credits.podlesnytwins.com/track/andrey-katikov-odinokimi/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -169,7 +49,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/morgenshtern-magic-man-grustno/</loc>
+    <loc>https://credits.podlesnytwins.com/track/macan-navai-neuzheli-eto-vse-lyubov/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/t-fest-davay-skonnektimsya/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -181,13 +67,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/lsp-stop-igra/</loc>
+    <loc>https://credits.podlesnytwins.com/track/t-fest-sovri-mne/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/lsp-hiona/</loc>
+    <loc>https://credits.podlesnytwins.com/track/dima-bilan-vector-v/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/aleksandra-vorobyova-hod-korolevy/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -199,7 +91,61 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://credits.podlesnytwins.com/track/anna-asti-dima-bilan-epilog/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://credits.podlesnytwins.com/track/haski-skolko-stoyat-dengi/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/pizza-navai-grustnyy-ekonom/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/t-fest-inogda/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/klava-koka-tysyachi-zim/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/t-fest-razbudi-menya/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/t-fest-katya-miltey-vstretimsya-zavtra/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/klava-koka-spletni-shum-luk/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/ollane-endshpil-motivy/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/hollyflame-plevat/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -217,67 +163,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/haski-ptitsy/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://credits.podlesnytwins.com/track/9mice-glaive-devo4ka/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/navai-skolko-vremeni-potratil-zrya/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/klava-koka-tysyachi-zim/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/klava-koka-spletni-shum-luk/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/klava-koka-eschyo-lyublyu/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/hollyflame-plevat/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/hollyflame-snegopad/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/ollane-endshpil-motivy/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/ollane-hloy-do-for-love/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/bato-madness/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -295,7 +181,19 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://credits.podlesnytwins.com/track/t-fest-11-pm-in-berlin/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://credits.podlesnytwins.com/track/polina-offline-ne-doveryay/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/pizza-skorost-pulsa/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -307,7 +205,37 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://credits.podlesnytwins.com/track/navai-skolko-vremeni-potratil-zrya/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://credits.podlesnytwins.com/track/misha-marvin-byla-lyubov/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/hollyflame-snegopad/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/pizza-zanovo/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/bato-madness/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/pizza-sny/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -319,7 +247,49 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://credits.podlesnytwins.com/track/pizza-leonid-agutin-naplevat-na-vseh/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/pizza-zoloto/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/morgenshtern-magic-man-grustno/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/pizza-dose-nochi-naprolyot/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/haski-ptitsy/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/lsp-stop-igra/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://credits.podlesnytwins.com/track/loc-dog-navai-ne-zakryvay/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/klava-koka-eschyo-lyublyu/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -337,7 +307,31 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/dashxx-vykin-menya-iz-golovy/</loc>
+    <loc>https://credits.podlesnytwins.com/track/ollane-hloy-do-for-love/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/pizza-let-it-be/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/dima-bilan-poobeschay/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/t-fest-kyol-heaven/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/lsp-hiona/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -350,36 +344,6 @@
   </url>
   <url>
     <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-it-s-true-demo-0-2/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-indi-de-v-v-moey-golove/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-signaly/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-jimm-bricks/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-zhdi-menya/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-dezhavyu/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -403,25 +367,25 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/magic-man-spichki/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/magic-man-angelina/</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://credits.podlesnytwins.com/track/bollywoodfm-ni-svoih-ni-chuzhih/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-indi-de-v-v-moey-golove/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://credits.podlesnytwins.com/track/eli-angel-haze-beautiful-tears/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-signaly/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -439,13 +403,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/dose-vokrug-sveta/</loc>
+    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-jimm-bricks/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/dose-lyriq-adrenalin/</loc>
+    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-zhdi-menya/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/dose-vokrug-sveta/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -457,13 +427,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/bandura-vporyade/</loc>
+    <loc>https://credits.podlesnytwins.com/track/qantreez-x-chels-dezhavyu/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://credits.podlesnytwins.com/track/bandura-problemnyy-patsan/</loc>
+    <loc>https://credits.podlesnytwins.com/track/dashxx-vykin-menya-iz-golovy/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/magic-man-spichki/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -476,6 +452,18 @@
   </url>
   <url>
     <loc>https://credits.podlesnytwins.com/track/jazzbe-dose-polnolunie/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/bandura-vporyade/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/dose-lyriq-adrenalin/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -511,6 +499,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://credits.podlesnytwins.com/track/magic-man-angelina/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://credits.podlesnytwins.com/track/wokawna-lyubi-menya/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -524,6 +518,12 @@
   </url>
   <url>
     <loc>https://credits.podlesnytwins.com/track/bondar-poka-menya-net/</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://credits.podlesnytwins.com/track/bandura-problemnyy-patsan/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
