@@ -336,131 +336,31 @@ document.addEventListener('click',function(){
   var m=document.getElementById('pfmenu'),c=document.getElementById('pfcta');
   if(m){ m.classList.remove('on'); c.classList.remove('on'); }
 });
-var spotifyCtrl=null, pendingUri=null, curTile=null;
+var spotifyCtrl=null, pendingUri=null, curTile=null, wantPlay=false;
 var IC_PLAY='&#9654;', IC_PAUSE='<span class="pb"></span><span class="pb"></span>';
 function setIcon(el,html){ if(!el) return; var pl=el.querySelector('.pl'); if(pl) pl.innerHTML=html; }
 function syncIcon(isPlaying){ if(!curTile) return; curTile.classList.toggle('paused',!isPlaying); setIcon(curTile,isPlaying?IC_PAUSE:IC_PLAY); }
-
-// Улучшенное определение iOS / Safari (для более агрессивных попыток play)
-var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
 window.onSpotifyIframeApiReady=function(API){
   API.createController(document.getElementById('pframe'),{width:'100%',height:80,uri:''},function(c){
     spotifyCtrl=c;
-    c.addListener('playback_update',function(e){
-      if(e&&e.data){
-        syncIcon(!e.data.isPaused);
-        if(!e.data.isPaused && curTile) curTile.classList.remove('retap');
-      }
-    });
-    if(pendingUri){
-      var u=pendingUri; pendingUri=null;
-      c.loadUri(u, function(){ c.play(); });
-      // Несколько попыток сразу при pending
-      setTimeout(function(){ if(c) c.play(); }, 30);
-      setTimeout(function(){ if(c) c.play(); }, 90);
-    }
+    c.addListener('playback_update',function(e){ if(e&&e.data){ syncIcon(!e.data.isPaused); if(!e.data.isPaused&&curTile) curTile.classList.remove('retap'); if(wantPlay&&e.data.isPaused){ wantPlay=false; c.resume(); if(curTile) curTile.classList.add('retap'); } } });
+    if(pendingUri){ wantPlay=true; c.loadUri(pendingUri); c.play(); pendingUri=null; }
   });
 };
-
 function play(el){
-  if(el===curTile){
-    // If it was waiting for second tap (retap), force resume aggressively
-    if(el.classList.contains('retap') && spotifyCtrl){
-      spotifyCtrl.resume();
-      el.classList.remove('retap');
-      // Дополнительные попытки resume (полезно на Safari/iOS)
-      setTimeout(function(){ if(spotifyCtrl) spotifyCtrl.resume(); }, 40);
-      setTimeout(function(){ if(spotifyCtrl) spotifyCtrl.resume(); }, 120);
-      return;
-    }
-    if(spotifyCtrl) spotifyCtrl.togglePlay();
-    return;
-  }
-  if(curTile){
-    curTile.classList.remove('playing','paused','retap');
-    setIcon(curTile,IC_PLAY);
-  }
-  curTile=el;
-  el.classList.add('playing');
-  el.classList.remove('retap');
-  setIcon(el,IC_PLAY);
-
+  if(el===curTile){ if(spotifyCtrl) spotifyCtrl.togglePlay(); return; }
+  if(curTile){ curTile.classList.remove('playing','paused','retap'); setIcon(curTile,IC_PLAY); }
+  curTile=el; el.classList.add('playing'); el.classList.remove('retap'); setIcon(el,IC_PLAY);
   var uri='spotify:track:'+el.dataset.id;
-  var playerBar = document.getElementById('player');
-  playerBar.classList.add('on');
-
-  // Дополнительная попытка, когда панель уже видна (иногда помогает)
-  setTimeout(function(){
-    if (spotifyCtrl && curTile === el) {
-      try { spotifyCtrl.play(); } catch(e){}
-    }
-  }, 20);
-
-  function doPlay(){
-    if(!spotifyCtrl) return;
-
-    var attempts = isIOS || isSafari ? [0, 25, 70, 140, 280] : [0, 60, 140];
-
-    function tryPlay() {
-      try { spotifyCtrl.play(); } catch (e) {}
-    }
-
-    // Загружаем трек. Когда загрузился — сразу пытаемся играть
-    spotifyCtrl.loadUri(uri, function(){
-      attempts.forEach(function(delay){
-        setTimeout(tryPlay, delay);
-      });
-    });
-
-    // Пытаемся играть сразу (жест пользователя ещё "свежий")
-    attempts.forEach(function(delay){
-      setTimeout(tryPlay, delay);
-    });
-  }
-
-  if(spotifyCtrl){
-    doPlay();
-  } else {
-    pendingUri = uri;
-  }
-
-  // Если через ~650мс плеер всё ещё не играет — показываем пульсирующую подсказку (retap)
-  // как fallback только для самых строгих случаев
-  setTimeout(function(){
-    if(curTile === el && el.classList.contains('playing') && !el.classList.contains('paused')){
-      // уже играет — всё хорошо
-    } else if(curTile === el && el.classList.contains('playing')){
-      el.classList.add('retap');
-    }
-  }, isIOS ? 650 : 750);
+  document.getElementById('player').classList.add('on');
+  if(spotifyCtrl){ wantPlay=true; spotifyCtrl.loadUri(uri); spotifyCtrl.play(); }
+  else { pendingUri=uri; }
 }
 function stop(){
   document.getElementById('player').classList.remove('on');
   if(spotifyCtrl) spotifyCtrl.pause();
   if(curTile){ curTile.classList.remove('playing','paused','retap'); setIcon(curTile,IC_PLAY); curTile=null; }
 }
-
-// Make bottom player bar clickable to resume (helps one-tap reliability on mobile)
-(function(){
-  var p = document.getElementById('player');
-  if(p){
-    p.addEventListener('click', function(e){
-      if(e.target.closest('.cl')) return; // ignore close button
-      if(spotifyCtrl && curTile){
-        spotifyCtrl.resume();
-        if(curTile) curTile.classList.remove('retap');
-        // На Safari/iOS часто помогает несколько попыток resume подряд
-        if (isIOS || isSafari) {
-          setTimeout(function(){ if(spotifyCtrl) spotifyCtrl.resume(); }, 30);
-          setTimeout(function(){ if(spotifyCtrl) spotifyCtrl.resume(); }, 90);
-        }
-      }
-    });
-  }
-})();
 function filt(b){
   document.querySelectorAll('.pf .f').forEach(x=>x.classList.remove('active'));
   b.classList.add('active');
