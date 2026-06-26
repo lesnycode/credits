@@ -408,7 +408,7 @@ function filt(b){
   }
   function drawLine(w){
     ctx.save(); ctx.beginPath();
-    var hs=H/55;
+    var hs=H/100;
     var a=w.a*(0.35+0.65*level)*hs;
     for(var x=0;x<=W;x+=2){
       var dx=x-mouse.x, dy=H/2-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
