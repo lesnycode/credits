@@ -41,8 +41,11 @@
 .pf .pflink .ar{color:#cf2c04;transition:transform .15s}
 .pf .pflink:hover{color:#fff}
 .pf .pflink:hover .ar{transform:translateX(4px)}
-.pf .navlinks{display:flex;align-items:center;gap:16px}
-.pf .pfworks{display:none;color:#cf2c04;border-bottom:2px solid #cf2c04;padding-bottom:2px;white-space:nowrap}
+.pf .navlinks{display:flex;align-items:center;gap:14px}
+.pf .navlinks .pflink{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.pf .navlinks .pflink .ar{display:none}
+.pf .navlinks .pflink+.pflink{border-left:1px solid rgba(255,255,255,.2);padding-left:14px}
+.pf .pfworks{display:inline-flex;color:#cf2c04;white-space:nowrap}
 .pf .pfworks:hover{color:#cf2c04}
 .pf .lead{font-size:24px;letter-spacing:.5px;color:#cf2c04;text-transform:uppercase;font-weight:700}
 .pf .pfhero{position:relative;border-radius:14px;overflow:hidden;background:#201f1e center 32%/cover no-repeat;aspect-ratio:16/9;margin:0 0 40px;display:flex;align-items:flex-end}
@@ -52,9 +55,9 @@
 .pf .pfnum b{color:#cf2c04;font-weight:800}
 .pf .pfcap{font-size:clamp(13px,2.4vw,20px);font-weight:700;color:#e6dede;margin-top:10px}
 .pf h1{font-family:'SaarSP',Arial,sans-serif;font-size:clamp(34px,6vw,58px);font-weight:400;line-height:.95;letter-spacing:0;margin:14px 0 12px}
-.pf .hero{position:relative;border-radius:14px;overflow:hidden;margin:6px 0 32px;min-height:clamp(74px,13vw,120px);display:flex;align-items:center;justify-content:center;background:#161514}
+.pf .hero{position:relative;border-radius:6px;overflow:hidden;height:18px;margin:2px 0 30px;background:#161514}
 .pf .hero canvas{position:absolute;inset:0;display:block}
-.pf .hero h1{position:relative;z-index:2;margin:0;text-align:center;padding:0 20px;text-shadow:0 2px 36px rgba(0,0,0,.6)}
+.pf .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .pf .sub{font-size:16px;font-weight:700;color:#d8d0d0;max-width:520px;line-height:1.5;margin:0 0 32px}
 .pf .filters{display:flex;flex-wrap:wrap;align-items:baseline;gap:24px;margin-bottom:26px}
 .pf .f{background:none;border:0;border-radius:0;padding:0 0 8px;font:inherit;font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#b6afaf;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
@@ -96,16 +99,13 @@
 .pf .player iframe{flex:1;border:0;border-radius:12px}
 .pf .player .cl{background:transparent;border:0;color:#8f8888;font-size:24px;cursor:pointer;line-height:1;padding:4px 6px}
 @media (max-width:600px){
-.pf .hero{display:none}
+.pf .hero{height:16px;margin-bottom:22px}
 .pf{padding:30px 14px 132px}
 .pf .pfnav{margin-bottom:28px}
 .pf .pfbrand{width:112px;height:30px}
 .pf .pflink{font-size:13px}
-.pf .pfworks{display:inline-flex;border-bottom:0;padding-bottom:0}
-.pf .navlinks{gap:14px}
-.pf .navlinks .pflink{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
-.pf .navlinks .pflink .ar{display:none}
-.pf .navlinks .pflink+.pflink{border-left:1px solid rgba(255,255,255,.2);padding-left:14px}
+.pf .navlinks{gap:13px}
+.pf .navlinks .pflink{font-size:12px}
 .pf .pfhero{aspect-ratio:4/3;margin-bottom:30px}
 .pf .pfcount{padding:20px 18px}
 .pf .lead{font-size:17px}
@@ -171,9 +171,9 @@
     </nav>
   </div>
 
-  <div class="hero" id="hero">
+  <h1 class="sr-only">Podlesny Twins Credits</h1>
+  <div class="hero" id="hero" aria-hidden="true">
     <canvas id="waves" aria-hidden="true"></canvas>
-    <h1>Podlesny Twins Credits</h1>
   </div>
 
   <div class="filters">
@@ -408,11 +408,12 @@ function filt(b){
   }
   function drawLine(w){
     ctx.save(); ctx.beginPath();
-    var a=w.a*(0.35+0.65*level);
+    var hs=H/55;
+    var a=w.a*(0.35+0.65*level)*hs;
     for(var x=0;x<=W;x+=2){
       var dx=x-mouse.x, dy=H/2-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
       var infl=Math.max(0,1-dist/mRadius);
-      var me=infl*mInfl*Math.sin(t*0.0012+x*0.012+w.o)*level;
+      var me=infl*mInfl*hs*Math.sin(t*0.0012+x*0.012+w.o)*level;
       var y=H/2 + Math.sin(x*w.f+t*0.0022+w.o)*a + Math.sin(x*w.f*0.5+t*0.0031+w.o)*(a*0.4) + me;
       x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
     }
@@ -435,7 +436,8 @@ function filt(b){
     raf=requestAnimationFrame(frame);
   }
   function run(){ if(!raf) raf=requestAnimationFrame(frame); }
-  function setPlaying(p){ levelTarget=p?1:0; if(!reduce) run(); }
+  var idle=reduce?0:0.14;
+  function setPlaying(p){ levelTarget=p?1:idle; if(!reduce) run(); }
   resize();
   window.addEventListener('resize',function(){ resize(); render(); });
   if(!reduce){
@@ -446,6 +448,7 @@ function filt(b){
     new MutationObserver(function(){ setPlaying(player.classList.contains('on')); }).observe(player,{attributes:true,attributeFilter:['class']});
     if(player.classList.contains('on')) setPlaying(true);
   }
+  if(!reduce){ levelTarget=idle; run(); }
   render();
 })();
 </script>
