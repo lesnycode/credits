@@ -19,7 +19,8 @@
 - `.filters` — типографская строка фильтров (без pill-кнопок). `data-f` = жанр (ALL/HIPHOP/POP/INDIE/ROCK) или награда (GRAM/TOP1). Счётчики `.fc` считаются JS из `data-g`/`data-aw`.
 - `.grid` / `.tile` — карточки треков и альбомов. Одиночный трек: `data-g` (жанр), `data-id` (Spotify ID), `onclick="play(this)"`. Альбом: `.tile.album`, `onclick="openAlbum(N)"`, данные в массиве `ALBUMS`.
 - Награды: атрибут `data-aw` на тайле (`GRAM`/`TOP1`) — управляет только фильтрацией (визуальных бейджей на карточках нет, убраны).
-- Плеер: нижняя панель `#player`, использует **Spotify iFrame API** (`onSpotifyIframeApiReady` → `spotifyCtrl`). `play(el)` делает `loadUri`+`play` внутри клика; повторный клик по активной карточке = `togglePlay`. Иконка ▶ переключается на паузу (две полоски `.pb`) через событие `playback_update`.
+- Плеер: нижняя панель `#player`, использует **Spotify iFrame API** (`onSpotifyIframeApiReady` → `spotifyCtrl`). `play(el)` делает `loadUri`+`play` внутри клика; повторный клик по активной карточке = `togglePlay`. Иконка ▶ → пауза (две полоски `.pb`) по событию `playback_update`.
+- Мобильный автоплей (iOS/Safari часто блокирует): флаг `wantPlay` + класс `.tile.retap` — пульс play-кнопки (`@keyframes retap`), подсказка «тапни ещё раз». В `playback_update`: если `wantPlay && isPaused` → `resume()` + `.retap`; при реальном старте `.retap` снимается. Логика чувствительная — менялась братом несколько раз, текущая версия «retap + wantPlay».
 - Модалка альбома `#amodal`: `role="dialog"`, закрытие по Esc и клику по фону.
 
 ## Бренд / правила дизайна
