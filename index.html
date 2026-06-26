@@ -64,9 +64,15 @@
 .pf .tile:hover img{transform:scale(1.05);filter:brightness(.5)}
 .pf .ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s}
 .pf .tile:hover .ov{opacity:1}
-.pf .pl{width:54px;height:54px;border-radius:50%;background:#cf2c04;color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:20px;font-style:normal;padding-left:4px}
+.pf .pl{width:54px;height:54px;border-radius:50%;background:#cf2c04;color:#ffffff;display:flex;align-items:center;justify-content:center;gap:5px;font-size:20px;font-style:normal;padding-left:4px}
+.pf .pl .pb{width:5px;height:18px;border-radius:1px;background:#fff}
+.pf .tile.playing .ov{opacity:1}
+.pf .tile.playing img{filter:brightness(.5)}
+.pf .tile.playing:not(.paused) .pl{padding-left:0}
 .pf .meta{position:absolute;left:0;right:0;bottom:0;padding:14px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.85));display:flex;flex-direction:column;gap:1px}
 .pf .art{color:#cf2c04;font-size:12px;font-weight:700;letter-spacing:.2px}
+.pf .ia{font-size:.8em;font-weight:700;margin-left:1px}
+.pf .iadisc{max-width:560px;margin:26px auto 0;font-size:12px;line-height:1.5;color:#918b8b}
 .pf .trk{font-family:'SaarSP',Arial,sans-serif;font-size:16px;font-weight:400;letter-spacing:.01em;line-height:1.08;margin-top:3px}
 .pf .yr{font-size:11px;font-weight:500;color:#9a9292;margin-top:2px;opacity:0;transition:opacity .2s}
 .pf .tile:hover .yr{opacity:1}
@@ -132,7 +138,6 @@
 .pf .arow{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;background:transparent;border:0;border-top:1px solid #2a2a28;color:#fff;font:inherit;text-align:left;padding:13px 4px;cursor:pointer;transition:.12s}
 .pf .arow:hover{background:#262625}
 .pf .atrk{font-size:15px;font-weight:600}
-.pf .ayr{font-size:12px;color:#9a9292;white-space:nowrap}
 .pf .arow:before{content:"\25B6";color:#cf2c04;font-size:11px;margin-right:10px}
 @media (max-width:600px){
 .pf .tile.fan{overflow:hidden}
@@ -172,10 +177,10 @@
       <button class="tile" data-g="INDIE" data-id="1pfMk3VFKXLpLNhHRO9Pj3" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b27384d87bfdd8f3ef579780652e" alt="Андрей Катиков — Прости · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">Андрей Катиков</span><span class="trk">Прости</span><span class="yr">2025</span></span></button>
       <button class="tile" data-g="INDIE" data-id="5yEiOtk0MRW8uo4ePiP5q4" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b273e44b84d6b248826118db8dbc" alt="Андрей Катиков — Одинокими · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">Андрей Катиков</span><span class="trk">Одинокими</span><span class="yr">2025</span></span></button>
       <button class="tile" data-g="INDIE" data-id="0adwpGjaO5bJLWJYleaJp2" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b2737a65630bed599d3c6cc5bd7d" alt="Андрей Катиков — А дождь пройдёт · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">Андрей Катиков</span><span class="trk">А дождь пройдёт</span><span class="yr">2025</span></span></button>
-      <button class="tile album" data-g="INDIE" onclick="openAlbum(17)"><img src="https://i.scdn.co/image/ab67616d0000b273e068851359721fd7981c98b2" alt="Андрей Катиков — Праздничный (альбом) · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="abadge">2 тр.</span><span class="ov"><i class="pl">&#9776;</i></span><span class="meta"><span class="art">Андрей Катиков</span><span class="trk">Праздничный</span><span class="yr">альбом</span></span></button>
+      <button class="tile album" data-g="INDIE" onclick="openAlbum(17)"><img src="https://i.scdn.co/image/ab67616d0000b273e068851359721fd7981c98b2" alt="Андрей Катиков — Праздничный (альбом) · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="abadge">2 трека</span><span class="ov"><i class="pl">&#9776;</i></span><span class="meta"><span class="art">Андрей Катиков</span><span class="trk">Праздничный</span><span class="yr">альбом</span></span></button>
       
-      <button class="tile album" data-g="ROCK" data-aw="TOP1" onclick="openAlbum(1)"><img src="https://i.scdn.co/image/ab67616d0000b27310dc167541c3985a4250ddac" alt="MORGENSHTERN — ALISHER (альбом) · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="abadge">5 треков</span><span class="ov"><i class="pl">&#9776;</i></span><span class="meta"><span class="art">MORGENSHTERN</span><span class="trk">ALISHER</span><span class="yr">альбом</span></span></button>
-      <button class="tile" data-g="ROCK" data-aw="TOP1" data-id="527D034h8WFtVDOBO6GAN5" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b27306d115628b77ec4b64232d0b" alt="MORGENSHTERN — Последняя Любовь · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">MORGENSHTERN</span><span class="trk">Последняя Любовь</span><span class="yr">2024</span></span></button>
+      <button class="tile album" data-g="ROCK" data-aw="TOP1" onclick="openAlbum(1)"><img src="https://i.scdn.co/image/ab67616d0000b27310dc167541c3985a4250ddac" alt="MORGENSHTERN — ALISHER (альбом) · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="abadge">5 треков</span><span class="ov"><i class="pl">&#9776;</i></span><span class="meta"><span class="art">MORGENSHTERN<sup class="ia">*</sup></span><span class="trk">ALISHER</span><span class="yr">альбом</span></span></button>
+      <button class="tile" data-g="ROCK" data-aw="TOP1" data-id="527D034h8WFtVDOBO6GAN5" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b27306d115628b77ec4b64232d0b" alt="MORGENSHTERN — Последняя Любовь · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">MORGENSHTERN<sup class="ia">*</sup></span><span class="trk">Последняя Любовь</span><span class="yr">2024</span></span></button>
       <button class="tile" data-g="HIPHOP" data-id="291y18t6cDGzM00iaUcNhi" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b273b3ca871cb420d01758892668" alt="MACAN;NAVAI — Неужели это все любовь · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">MACAN;NAVAI</span><span class="trk">Неужели это все любовь</span><span class="yr">2025</span></span></button>
       <button class="tile" data-g="HIPHOP" data-id="3YpYzeTyWOYXilCaBTxBUT" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b273052a6b4ffb9e4d58fbceda02" alt="T-Fest — Давай сконнектимся · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">T-Fest</span><span class="trk">Давай сконнектимся</span><span class="yr">2025</span></span></button>
       <button class="tile" data-g="HIPHOP" data-id="7igRCIpWVfpWTbhfsfn7su" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b2734b65247b67c6fe2de56ceb1d" alt="ЛСП — Шиншиллы · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">ЛСП</span><span class="trk">Шиншиллы</span><span class="yr">2025</span></span></button>
@@ -193,7 +198,7 @@
       <button class="tile album" data-g="POP" onclick="openAlbum(13)"><img src="https://i.scdn.co/image/ab67616d0000b2734758bdf80c777b6ca96ddec1" alt="NAVAI — Фриковая дама (альбом) · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="abadge">7 треков</span><span class="ov"><i class="pl">&#9776;</i></span><span class="meta"><span class="art">NAVAI</span><span class="trk">Фриковая дама</span><span class="yr">альбом</span></span></button>
       <button class="tile" data-g="POP" data-id="7lihukNOr8sjqnUKIP8rxQ" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b273e8410295e1d15d293799a9ee" alt="Клава Кока — Тысячи зим · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">Клава Кока</span><span class="trk">Тысячи зим</span><span class="yr">2026</span></span></button>
       <button class="tile" data-g="HIPHOP" data-id="2X2k5WD2CProLG4qqTVd3S" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b27319d87b9d39839393b7937a27" alt="T-Fest — Разбуди меня · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">T-Fest</span><span class="trk">Разбуди меня</span><span class="yr">2024</span></span></button>
-      <button class="tile album" data-g="ROCK" onclick="openAlbum(0)"><img src="https://i.scdn.co/image/ab67616d0000b273e7a5748cdd428922c2bfbb11" alt="MORGENSHTERN — LAST ONE (альбом) · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="abadge">3 трека</span><span class="ov"><i class="pl">&#9776;</i></span><span class="meta"><span class="art">MORGENSHTERN</span><span class="trk">LAST ONE</span><span class="yr">альбом</span></span></button>
+      <button class="tile album" data-g="HIPHOP" onclick="openAlbum(0)"><img src="https://i.scdn.co/image/ab67616d0000b273e7a5748cdd428922c2bfbb11" alt="MORGENSHTERN — LAST ONE (альбом) · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="abadge">3 трека</span><span class="ov"><i class="pl">&#9776;</i></span><span class="meta"><span class="art">MORGENSHTERN<sup class="ia">*</sup></span><span class="trk">LAST ONE</span><span class="yr">альбом</span></span></button>
       <button class="tile album" data-g="POP" onclick="openAlbum(2)"><img src="https://i.scdn.co/image/ab67616d0000b273bae6fb27df20844f3a9b401a" alt="HOLLYFLAME — Сделай меня грустным (альбом) · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="abadge">5 треков</span><span class="ov"><i class="pl">&#9776;</i></span><span class="meta"><span class="art">HOLLYFLAME</span><span class="trk">Сделай меня грустным</span><span class="yr">альбом</span></span></button>
       <button class="tile" data-g="HIPHOP" data-id="3wAnXvu0MuqxmV0PjvW8OP" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b27357dde7f02653672d2109d479" alt="T-Fest;катя милтей — Встретимся завтра · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">T-Fest;катя милтей</span><span class="trk">Встретимся завтра</span><span class="yr">2025</span></span></button>
       <button class="tile" data-g="POP" data-id="5KgvgvgJz7BK23rf71yOS5" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b273c90b5cd16167cd1dd4f4c9f3" alt="Клава Кока — СПЛЕТНИ. ШУМ. ЛУК. · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">Клава Кока</span><span class="trk">СПЛЕТНИ. ШУМ. ЛУК.</span><span class="yr">2025</span></span></button>
@@ -223,7 +228,7 @@
       <button class="tile" data-g="INDIE" data-id="1pfMk3VFKXLpLNhHRO9Pj3" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b27384d87bfdd8f3ef579780652e" alt="Андрей Катиков — Прости · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">Андрей Катиков</span><span class="trk">Прости</span><span class="yr">2025</span></span></button>
       <button class="tile" data-g="POP" data-id="0quU9n8FB3ib7u9lU74P4R" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b273a6674dccd6fd3302790dd659" alt="PIZZA;Леонид Агутин — Наплевать на всех · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">PIZZA;Леонид Агутин</span><span class="trk">Наплевать на всех</span><span class="yr">2025</span></span></button>
       <button class="tile" data-g="POP" data-id="5YYY1hBmplAIHVoBcZQ1dU" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b273e34b1b2b980fc7bddd21d31a" alt="PIZZA — Золото · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">PIZZA</span><span class="trk">Золото</span><span class="yr">2026</span></span></button>
-      <button class="tile" data-g="ROCK" data-id="4PuQyc6YpIkH7rUeVxMpfp" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b2737ac75d08a0546dee7a006f16" alt="MORGENSHTERN;Magic Man — Грустно · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">MORGENSHTERN;Magic Man</span><span class="trk">Грустно</span><span class="yr">2023</span></span></button>
+      <button class="tile" data-g="HIPHOP" data-id="4PuQyc6YpIkH7rUeVxMpfp" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b2737ac75d08a0546dee7a006f16" alt="MORGENSHTERN;Magic Man — Грустно · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">MORGENSHTERN<sup class="ia">*</sup>;Magic Man</span><span class="trk">Грустно</span><span class="yr">2023</span></span></button>
       <button class="tile" data-g="POP" data-id="5E8zdcaN4BylyJ6sSQaAn4" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b2733edaf3d3bcb4efde4546674d" alt="PIZZA;Dose — Ночи напролёт · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">PIZZA;Dose</span><span class="trk">Ночи напролёт</span><span class="yr">2025</span></span></button>
       <button class="tile" data-g="HIPHOP" data-id="25IfLOvP9DUpcLluLHg3hc" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b273e269c1e0a52614185e042716" alt="Хаски — Птицы · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">Хаски</span><span class="trk">Птицы</span><span class="yr">2020</span></span></button>
       <button class="tile" data-g="HIPHOP" data-id="5RUDTbUhBbwggPxuntDzjQ" onclick="play(this)"><img src="https://i.scdn.co/image/ab67616d0000b27397a1f318f2dc85a1319e7152" alt="ЛСП — Стоп Игра · сведение и мастеринг Podlesny Twins" loading="lazy"><span class="ov"><i class="pl">&#9654;</i></span><span class="meta"><span class="art">ЛСП</span><span class="trk">Стоп Игра</span><span class="yr">2023</span></span></button>
@@ -292,6 +297,7 @@
         <a href="https://t.me/podlesnyy">&#1040;&#1085;&#1090;&#1086;&#1085; &#1055;&#1086;&#1076;&#1083;&#1077;&#1089;&#1085;&#1099;&#1081;</a>
       </div>
     </div>
+    <p class="iadisc">* Моргенштерн Алишер Тагирович признан в Российской Федерации иностранным агентом.</p>
   </div>
 
 
@@ -310,10 +316,9 @@ var ALBUMS=[{"artist": "MORGENSHTERN", "name": "LAST ONE", "cover": "https://i.s
 
 function ae(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function plt(n){var a=n%10,b=n%100,w=(a===1&&b!==11)?'трек':(a>=2&&a<=4&&(b<10||b>=20))?'трека':'треков';return n+' '+w;}
-function rows(tracks){var h="";tracks.forEach(function(t){h+='<button class="arow" data-id="'+t.id+'"><span class="atrk">'+ae(t.title)+'</span><span class="ayr">'+(t.year||"")+'</span></button>';});return h;}
+function rows(tracks){var h="";tracks.forEach(function(t){h+='<button class="arow" data-id="'+t.id+'"><span class="atrk">'+ae(t.title)+'</span></button>';});return h;}
 function show(h){var b=document.getElementById("abody");b.innerHTML=h;b.querySelectorAll(".arow").forEach(function(x){x.onclick=function(){play(x);closeAlbum();};});document.getElementById("amodal").classList.add("on");}
-function openAlbum(i){var a=ALBUMS[i];show('<div class="ahead"><img src="'+ae(a.cover)+'"><div><div class="aart">'+ae(a.artist)+'</div><div class="aalb">'+ae(a.name)+'</div><div class="acnt">'+plt(a.tracks.length)+' в нашем сведении</div></div></div>'+rows(a.tracks));}
-
+function openAlbum(i){var a=ALBUMS[i];var ia=/MORGENSHTERN/i.test(a.artist)?'<sup class="ia">*</sup>':'';show('<div class="ahead"><img src="'+ae(a.cover)+'"><div><div class="aart">'+ae(a.artist)+ia+'</div><div class="aalb">'+ae(a.name)+'</div></div></div>'+rows(a.tracks));}
 function closeAlbum(){document.getElementById("amodal").classList.remove("on");}
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAlbum();});
 </script>
@@ -327,14 +332,21 @@ document.addEventListener('click',function(){
   var m=document.getElementById('pfmenu'),c=document.getElementById('pfcta');
   if(m){ m.classList.remove('on'); c.classList.remove('on'); }
 });
-var spotifyCtrl=null, pendingUri=null;
+var spotifyCtrl=null, pendingUri=null, curTile=null;
+var IC_PLAY='&#9654;', IC_PAUSE='<span class="pb"></span><span class="pb"></span>';
+function setIcon(el,html){ if(!el) return; var pl=el.querySelector('.pl'); if(pl) pl.innerHTML=html; }
+function syncIcon(isPlaying){ if(!curTile) return; curTile.classList.toggle('paused',!isPlaying); setIcon(curTile,isPlaying?IC_PAUSE:IC_PLAY); }
 window.onSpotifyIframeApiReady=function(API){
   API.createController(document.getElementById('pframe'),{width:'100%',height:80,uri:''},function(c){
     spotifyCtrl=c;
+    c.addListener('playback_update',function(e){ if(e&&e.data) syncIcon(!e.data.isPaused); });
     if(pendingUri){ c.loadUri(pendingUri); c.play(); pendingUri=null; }
   });
 };
 function play(el){
+  if(el===curTile){ if(spotifyCtrl) spotifyCtrl.togglePlay(); return; }
+  if(curTile){ curTile.classList.remove('playing','paused'); setIcon(curTile,IC_PLAY); }
+  curTile=el; el.classList.add('playing'); setIcon(el,IC_PAUSE);
   var uri='spotify:track:'+el.dataset.id;
   document.getElementById('player').classList.add('on');
   if(spotifyCtrl){ spotifyCtrl.loadUri(uri); spotifyCtrl.play(); }
@@ -343,6 +355,7 @@ function play(el){
 function stop(){
   document.getElementById('player').classList.remove('on');
   if(spotifyCtrl) spotifyCtrl.pause();
+  if(curTile){ curTile.classList.remove('playing','paused'); setIcon(curTile,IC_PLAY); curTile=null; }
 }
 function filt(b){
   document.querySelectorAll('.pf .f').forEach(x=>x.classList.remove('active'));
