@@ -318,11 +318,9 @@ def render_hub(tracks: list[dict]) -> str:
 
         rels = []
         for name, alb in g["albums"].items():
-            feat = others_of(alb["artist"])
-            feat_html = f'<span class="feat"> · с {esc(", ".join(feat))}</span>' if feat else ""
             items = "".join(
                 f'<li><a href="/track/{esc(t["slug"])}/" '
-                f'data-q="{_dq(t["title"], t["artist"], name)}">{esc(t["title"])}</a></li>'
+                f'data-q="{_dq(t["title"], t["artist"], name)}">{esc(t["title"])}{_feat(t)}</a></li>'
                 for t in alb["tracks"]
             )
             year = f'<span class="rel-year">{esc(alb["year"])}</span>' if alb["year"] else ""
@@ -332,7 +330,7 @@ def render_hub(tracks: list[dict]) -> str:
                 f'alt="{esc(name + " — " + artist)}" loading="lazy" width="56" height="56">'
                 '<div class="rel-body">'
                 f'<div class="rel-head"><span class="rel-name">«{esc(name)}»</span>{year}'
-                f'<span class="rel-kind">альбом</span>{feat_html}</div>'
+                f'<span class="rel-kind">альбом</span></div>'
                 f'<ol class="trk-list">{items}</ol>'
                 "</div></div>"
             )
