@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parent
 INDEX = ROOT / "index.html"
 TRACK_DIR = ROOT / "track"
 ROLES_FILE = ROOT / "roles.json"
+FEATS_FILE = ROOT / "feats.json"
 SITE = "https://credits.podlesnytwins.com"
 TODAY = date.today().isoformat()
 
@@ -74,10 +75,29 @@ def others_of(artist: str) -> list[str]:
     return [canon(x) for x in artist.split(", ")[1:]]
 
 
+def feat_of(tr: dict) -> list[str]:
+    """Per-track featured artists. Album tracks: explicit `feat` field
+    (string or list). Singles: fall back to non-primary artists in `artist`."""
+    f = tr.get("feat")
+    if f:
+        names = [f] if isinstance(f, str) else list(f)
+        return [canon(x) for x in names if x]
+    return [] if tr.get("album") else others_of(tr["artist"])
+
+
 def load_roles() -> dict:
     if ROLES_FILE.is_file():
         return json.loads(ROLES_FILE.read_text(encoding="utf-8"))
     return {}
+
+
+def load_feats() -> dict:
+    """Map track id -> featured artist(s) from feats.json. Value is a
+    string ("SALUKI") or list (["SALUKI", "OG Buda"]); empty = no feat."""
+    if not FEATS_FILE.is_file():
+        return {}
+    data = json.loads(FEATS_FILE.read_text(encoding="utf-8"))
+    return {row["id"]: row["feat"] for row in data if row.get("feat")}
 
 
 def extract_tracks(doc: str, roles: dict) -> list[dict]:
@@ -101,6 +121,7 @@ def extract_tracks(doc: str, roles: dict) -> list[dict]:
             "album": "", "role": roles.get(tid, "mix"),
         })
 
+    feats = load_feats()
     albums = json.loads(re.search(r"var ALBUMS=(\[.*?\]);", doc, re.S).group(1))
     for album in albums:
         for tr in album["tracks"]:
@@ -112,6 +133,7 @@ def extract_tracks(doc: str, roles: dict) -> list[dict]:
                 "id": tid, "img": album["cover"], "artist": album["artist"],
                 "title": tr["title"], "year": tr.get("year", ""),
                 "album": album["name"], "role": roles.get(tid, "mix"),
+                "feat": feats.get(tid, tr.get("feat", "")),
             })
 
     return tracks
@@ -281,7 +303,7 @@ def _dq(*parts: str) -> str:
 
 
 def _feat(tr: dict) -> str:
-    o = others_of(tr["artist"])
+    o = feat_of(tr)
     return f'<span class="feat"> · с {esc(", ".join(o))}</span>' if o else ""
 
 

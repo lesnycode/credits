@@ -358,7 +358,8 @@ function play(el){
   if(curTile){ curTile.classList.remove('playing','paused','retap'); setIcon(curTile,IC_PLAY); }
   curTile=el; el.classList.add('playing'); el.classList.remove('retap'); setIcon(el,IC_PLAY);
   var uri='spotify:track:'+el.dataset.id;
-  document.getElementById('player').classList.add('on');
+  var pl=document.getElementById('player'); pl.dataset.tid=el.dataset.id||'';
+  pl.classList.add('on');
   if(spotifyCtrl){ wantPlay=true; spotifyCtrl.loadUri(uri); spotifyCtrl.play(); }
   else { pendingUri=uri; }
 }
@@ -404,6 +405,17 @@ function filt(b){
     {o:0.9, a:9, f:0.011, c:'#4a4644', op:0.85, w:1.2},
     {o:0,   a:15,f:0.013, c:'#cf2c04', op:1,    w:2.2}
   ];
+  // procedural "spectrum": per-track seeded frequency bands, pulsed to a beat
+  var bands=[], gainSum=1, beatHz=2, seed=1, eng=0.6;
+  function hashStr(s){ var h=2166136261; s=String(s); for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
+  function setSeed(id){
+    var h=hashStr(id||'idle'); seed=h; beatHz=(92+h%56)/60; // tempo 92..147 bpm from track id
+    bands=[]; gainSum=0;
+    for(var i=0;i<5;i++){ var hh=hashStr(h+'_'+i); var g=0.45+(hh%100)/100*0.85;
+      bands.push({ f:0.005+i*0.006+(hh%5)*0.0012, ph:(hh%628)/100, g:g, sp:0.008+(hh%9)*0.004 }); gainSum+=g; }
+    if(gainSum<=0) gainSum=1;
+  }
+  setSeed('idle');
   function resize(){
     var r=hero.getBoundingClientRect(); W=r.width; H=r.height;
     canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.width=W+'px'; canvas.style.height=H+'px';
@@ -413,13 +425,16 @@ function filt(b){
   function drawLine(w){
     ctx.save(); ctx.beginPath();
     var hs=H/100;
-    var a=w.a*(0.35+0.65*level)*hs;
-    var yb=H/2 - (1.5 + 3.5*level); // baseline rides toward the top; oscillates from up high while playing
+    var yb=H/2 - 4*(1-level); // lift baseline in idle, settle to center when playing
+    var ampPx=1.0 + 6.0*level*eng; // calm in idle, swells on each beat while playing
+    var spd=1+2.2*level; // bands travel faster when playing
     for(var x=0;x<=W;x+=2){
       var dx=x-mouse.x, dy=yb-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
       var infl=Math.max(0,1-dist/mRadius);
       var me=infl*mInfl*hs*Math.sin(t*0.0012+x*0.012+w.o)*level;
-      var y=yb + Math.sin(x*w.f+t*0.0022+w.o)*a + Math.sin(x*w.f*0.5+t*0.0031+w.o)*(a*0.4) + me;
+      var s=0;
+      for(var i=0;i<bands.length;i++){ var bd=bands[i]; s+=bd.g*Math.sin(x*bd.f+t*bd.sp*spd+bd.ph+w.o); }
+      var y=yb + (s/gainSum)*ampPx + me;
       x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
     }
     ctx.lineWidth=w.w; ctx.strokeStyle=w.c; ctx.globalAlpha=w.op*level;
@@ -432,6 +447,10 @@ function filt(b){
   }
   function frame(){
     t+=1;
+    var sec=t/60;
+    var beat=Math.pow(Math.abs(Math.sin(Math.PI*sec*beatHz)),2.4); // sharp pulse on every beat
+    var section=0.6+0.4*Math.sin(sec*0.32+(seed%100)/16); // slow build/drop across the track
+    eng=(0.35+0.65*beat)*section; if(eng<0) eng=0;
     level+=(levelTarget-level)*0.06;
     mouse.x+=(target.x-mouse.x)*smooth; mouse.y+=(target.y-mouse.y)*smooth;
     render();
@@ -448,8 +467,8 @@ function filt(b){
     window.addEventListener('mouseleave',function(){ target.x=W/2; target.y=H/2; });
   }
   if(player){
-    new MutationObserver(function(){ setPlaying(player.classList.contains('on')); }).observe(player,{attributes:true,attributeFilter:['class']});
-    if(player.classList.contains('on')) setPlaying(true);
+    new MutationObserver(function(){ var on=player.classList.contains('on'); if(on) setSeed(player.dataset.tid); setPlaying(on); }).observe(player,{attributes:true,attributeFilter:['class']});
+    if(player.classList.contains('on')){ setSeed(player.dataset.tid); setPlaying(true); }
   }
   if(!reduce){ levelTarget=idle; run(); }
   render();
