@@ -85,14 +85,20 @@
 .pf .tile.hide{display:none}
 .pf .pffoot{margin-top:64px;padding-top:42px;border-top:1px solid rgba(255,255,255,.09);text-align:center}
 .pf .pfcontact{position:relative;display:inline-block}
-.pf .pfcta{display:inline-flex;align-items:center;gap:9px;background:#cf2c04;color:#fff;font-weight:700;font-size:16px;font-family:inherit;border:0;cursor:pointer;padding:15px 34px;border-radius:40px;transition:.15s}
-.pf .pfcta:hover{background:#e3401a}
-.pf .pfcta .ar{font-size:12px;transition:transform .15s}
+.pf .pfcta{display:inline-flex;align-items:center;gap:9px;background:none;color:#fff;font-weight:800;font-size:17px;font-family:inherit;letter-spacing:.06em;text-transform:uppercase;border:0;cursor:pointer;padding:0 0 9px;border-bottom:2px solid rgba(255,255,255,.22);transition:color .15s,border-color .15s}
+.pf .pfcta:hover{color:#cf2c04;border-bottom-color:#cf2c04}
+.pf .pfcta.on{color:#cf2c04;border-bottom-color:#cf2c04}
+.pf .pfcta .ar{font-size:11px;color:#cf2c04;transition:transform .15s}
 .pf .pfcta.on .ar{transform:rotate(180deg)}
 .pf .pfmenu{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 12px);background:#262625;border:1px solid #3a3935;border-radius:12px;padding:6px;min-width:240px;display:none;z-index:60}
 .pf .pfmenu.on{display:block}
 .pf .pfmenu a{display:block;color:#fff;text-decoration:none;font-weight:600;font-size:15px;padding:12px 16px;border-radius:8px;text-align:left;transition:.12s}
 .pf .pfmenu a:hover{background:#cf2c04}
+.pf .pfactions{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:28px}
+.pf .pfmenu .pp{display:flex;align-items:baseline;justify-content:space-between;gap:18px;padding:12px 16px;font-size:14px}
+.pf .pfmenu .pp+.pp{border-top:1px solid #3a3935}
+.pf .pfmenu .ppk{color:#918b8b;font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:12px}
+.pf .pfmenu .ppv{color:#e7e2e2;font-weight:700;white-space:nowrap}
 .pf .player{position:fixed;left:0;right:0;bottom:0;background:#111110;border-top:1px solid #2a2a28;padding:10px 16px;transform:translateY(110%);transition:.3s;z-index:50}
 .pf .player.on{transform:none}
 .pf .player .inner{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px}
@@ -299,11 +305,20 @@
   </div>
 
   <div class="pffoot">
-    <div class="pfcontact">
-      <button class="pfcta" id="pfcta" onclick="toggleContact(event)">&#1057;&#1074;&#1103;&#1079;&#1072;&#1090;&#1100;&#1089;&#1103; &#1089; &#1085;&#1072;&#1084;&#1080; <span class="ar">&#9660;</span></button>
-      <div class="pfmenu" id="pfmenu">
-        <a href="https://t.me/podlesnytwins">&#1055;&#1072;&#1074;&#1077;&#1083; &#1055;&#1086;&#1076;&#1083;&#1077;&#1089;&#1085;&#1099;&#1081;</a>
-        <a href="https://t.me/podlesnyy">&#1040;&#1085;&#1090;&#1086;&#1085; &#1055;&#1086;&#1076;&#1083;&#1077;&#1089;&#1085;&#1099;&#1081;</a>
+    <div class="pfactions">
+      <div class="pfcontact">
+        <button class="pfcta" id="pfcta" onclick="toggleContact(event)">&#1057;&#1074;&#1103;&#1079;&#1072;&#1090;&#1100;&#1089;&#1103; &#1089; &#1085;&#1072;&#1084;&#1080; <span class="ar">&#9660;</span></button>
+        <div class="pfmenu" id="pfmenu">
+          <a href="https://t.me/podlesnytwins">&#1055;&#1072;&#1074;&#1077;&#1083; &#1055;&#1086;&#1076;&#1083;&#1077;&#1089;&#1085;&#1099;&#1081;</a>
+          <a href="https://t.me/podlesnyy">&#1040;&#1085;&#1090;&#1086;&#1085; &#1055;&#1086;&#1076;&#1083;&#1077;&#1089;&#1085;&#1099;&#1081;</a>
+        </div>
+      </div>
+      <div class="pfcontact">
+        <button class="pfcta" id="pfterms" onclick="toggleTerms(event)">&#1059;&#1089;&#1083;&#1086;&#1074;&#1080;&#1103; <span class="ar">&#9660;</span></button>
+        <div class="pfmenu" id="pftermsmenu">
+          <div class="pp"><span class="ppk">&#1057;&#1074;&#1077;&#1076;&#1077;&#1085;&#1080;&#1077;</span><span class="ppv">&#1086;&#1090; 30 000 &#1076;&#1086; 45 000 &#8381;</span></div>
+          <div class="pp"><span class="ppk">&#1052;&#1072;&#1089;&#1090;&#1077;&#1088;&#1080;&#1085;&#1075;</span><span class="ppv">6 000 &#8381;</span></div>
+        </div>
       </div>
     </div>
     <p class="seo-foot"><a href="/track/">Полный список треков</a></p>
@@ -335,13 +350,24 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAlbum()
 <script>
 function toggleContact(e){
   e.stopPropagation();
+  closeFootMenus('pfmenu');
   document.getElementById('pfmenu').classList.toggle('on');
   document.getElementById('pfcta').classList.toggle('on');
 }
-document.addEventListener('click',function(){
-  var m=document.getElementById('pfmenu'),c=document.getElementById('pfcta');
-  if(m){ m.classList.remove('on'); c.classList.remove('on'); }
-});
+function toggleTerms(e){
+  e.stopPropagation();
+  closeFootMenus('pftermsmenu');
+  document.getElementById('pftermsmenu').classList.toggle('on');
+  document.getElementById('pfterms').classList.toggle('on');
+}
+function closeFootMenus(except){
+  [['pfmenu','pfcta'],['pftermsmenu','pfterms']].forEach(function(p){
+    if(p[0]===except)return;
+    var m=document.getElementById(p[0]),c=document.getElementById(p[1]);
+    if(m){ m.classList.remove('on'); c.classList.remove('on'); }
+  });
+}
+document.addEventListener('click',function(){ closeFootMenus(); });
 var spotifyCtrl=null, pendingUri=null, curTile=null, wantPlay=false;
 var IC_PLAY='&#9654;', IC_PAUSE='<span class="pb"></span><span class="pb"></span>';
 function setIcon(el,html){ if(!el) return; var pl=el.querySelector('.pl'); if(pl) pl.innerHTML=html; }
