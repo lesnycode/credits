@@ -264,6 +264,18 @@ h1{{font-size:clamp(26px,5vw,38px);line-height:1.08;margin:0;font-weight:700;let
 
 # ── hub (grouped reference, deduped by primary artist) ───────────────
 
+def _artist_sort_key(name: str):
+    """Latin A–Z first, then Cyrillic А–Я, then digits/other."""
+    cl = (name[:1] or "").lower()
+    if "a" <= cl <= "z":
+        bucket = 0
+    elif "а" <= cl <= "я" or cl == "ё":
+        bucket = 1
+    else:
+        bucket = 2
+    return (bucket, name.lower())
+
+
 def _dq(*parts: str) -> str:
     return esc(" ".join(p for p in parts if p).lower())
 
@@ -289,7 +301,7 @@ def render_hub(tracks: list[dict]) -> str:
         else:
             g["singles"].append(tr)
 
-    artists = sorted(groups, key=str.lower)
+    artists = sorted(groups, key=_artist_sort_key)
     any_ia = any(g["ia"] for g in groups.values())
 
     blocks = []
