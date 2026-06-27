@@ -61,6 +61,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://credits.podlesnytwins.com/track/dima-bilan-poobeschay/</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://credits.podlesnytwins.com/track/anna-asti-dima-bilan-epilog/</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -1226,12 +1232,6 @@
   </url>
   <url>
     <loc>https://credits.podlesnytwins.com/track/tumaniyo-bam-bam/</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://credits.podlesnytwins.com/track/dima-bilan-poobeschay/</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
