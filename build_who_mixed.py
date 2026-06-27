@@ -19,6 +19,7 @@ INDEX = ROOT / "index.html"
 TRACK_DIR = ROOT / "track"
 ROLES_FILE = ROOT / "roles.json"
 FEATS_FILE = ROOT / "feats.json"
+NOTES_FILE = ROOT / "notes.json"
 SITE = "https://credits.podlesnytwins.com"
 TODAY = date.today().isoformat()
 
@@ -89,6 +90,17 @@ def load_roles() -> dict:
     if ROLES_FILE.is_file():
         return json.loads(ROLES_FILE.read_text(encoding="utf-8"))
     return {}
+
+
+def load_notes() -> dict:
+    """Per-track story blocks (slug -> list of paragraphs), shown under lead."""
+    if NOTES_FILE.is_file():
+        return json.loads(NOTES_FILE.read_text(encoding="utf-8"))
+    return {}
+
+
+# track-story blocks keyed by slug; populated in main()
+NOTES: dict = {}
 
 
 def load_feats() -> dict:
@@ -217,6 +229,10 @@ def render_page(tr: dict) -> str:
         f" · {esc(tr['year'])}" if has_year else ""
     )
 
+    note_html = "".join(
+        f'\n  <p class="note">{esc(p)}</p>' for p in NOTES.get(tr["slug"], [])
+    )
+
     return f"""<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -253,6 +269,8 @@ a{{color:inherit;text-decoration:none}}
 h1{{font-size:clamp(26px,5vw,38px);line-height:1.08;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:balance}}
 .lead{{font-size:16px;color:#cfc9c9;margin:0 0 26px;max-width:62ch}}
 .lead strong{{color:var(--ink);font-weight:600}}
+.note{{font-size:15px;color:var(--mut);max-width:62ch;margin:0 0 16px;padding-left:14px;border-left:2px solid var(--line)}}
+.note:last-of-type{{margin-bottom:26px}}
 .embed{{border-radius:12px;overflow:hidden;margin:0 0 28px}}
 .back{{font-size:14px;color:var(--mut)}}
 .back a{{color:var(--red);font-weight:600}}
@@ -273,7 +291,7 @@ h1{{font-size:clamp(26px,5vw,38px);line-height:1.08;margin:0;font-weight:700;let
       <h1>«{esc(tr['title'])}»</h1>
     </div>
   </div>
-  <p class="lead">{lead}</p>
+  <p class="lead">{lead}</p>{note_html}
   <div class="embed">
     <iframe src="https://open.spotify.com/embed/track/{esc(tr['id'])}?utm_source=generator" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Слушать «{esc(tr['title'])}»"></iframe>
   </div>
@@ -558,7 +576,9 @@ def write_sitemap(tracks: list[dict]) -> None:
 
 
 def main() -> None:
+    global NOTES
     roles = load_roles()
+    NOTES = load_notes()
     doc = INDEX.read_text(encoding="utf-8")
     tracks = extract_tracks(doc, roles)
     assign_slugs(tracks)
