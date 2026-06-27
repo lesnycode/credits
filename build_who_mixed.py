@@ -30,12 +30,12 @@ IA = {"morgenshtern"}
 
 GA_TAG = (
     '<!-- Google tag (gtag.js) -->\n'
-    '<script async src="https://www.googletagmanager.com/gtag/js?id=G-RZYRP8EFQP"></script>\n'
+    '<script async src="https://www.googletagmanager.com/gtag/js?id=G-JWPH35TTVX"></script>\n'
     '<script>\n'
     '  window.dataLayer = window.dataLayer || [];\n'
     '  function gtag(){dataLayer.push(arguments);}\n'
     "  gtag('js', new Date());\n"
-    "  gtag('config', 'G-RZYRP8EFQP');\n"
+    "  gtag('config', 'G-JWPH35TTVX');\n"
     '</script>'
 )
 
