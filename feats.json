@@ -18,7 +18,7 @@
   "artist": "MORGENSHTERN",
   "title": "Дор Блю",
   "id": "7BnqVQ9dzFli95IPNBMiSd",
-  "feat": ""
+  "feat": "LSP"
  },
  {
   "album": "ALISHER",
@@ -263,21 +263,21 @@
   "artist": "BATO, SALUKI",
   "title": "2 Clips",
   "id": "6Ns1guGjZrxj705FnENwWg",
-  "feat": ""
+  "feat": "TVETH"
  },
  {
   "album": "6lankname 2",
   "artist": "BATO, SALUKI",
   "title": "Damage",
   "id": "3I7fXUSbF0WwckuAj2AvzO",
-  "feat": ""
+  "feat": "Icegergert"
  },
  {
   "album": "6lankname 2",
   "artist": "BATO, SALUKI",
   "title": "Thunder",
   "id": "7LOAJcVstzq2I8etyjpv0x",
-  "feat": ""
+  "feat": "JEEMBO"
  },
  {
   "album": "6lankname 2",
@@ -291,7 +291,7 @@
   "artist": "BATO, SALUKI",
   "title": "Ярд",
   "id": "4BYvBixwhw9WiYHQZUPv6h",
-  "feat": ""
+  "feat": "YASMI"
  },
  {
   "album": "6lankname 2",
@@ -305,7 +305,7 @@
   "artist": "BATO, SALUKI",
   "title": "Hiders",
   "id": "3FPJI76RzYW8SfzP34FP5L",
-  "feat": ""
+  "feat": "Avenuepluggg"
  },
  {
   "album": "6lankname 2",
@@ -333,14 +333,14 @@
   "artist": "BATO, SALUKI",
   "title": "Overdoze",
   "id": "6KjnD6yHDQ5lZChVfeYska",
-  "feat": ""
+  "feat": "OBLADAET"
  },
  {
   "album": "6lankname 2",
   "artist": "BATO, SALUKI",
   "title": "AcidHillz",
   "id": "378BqnY18QJU2oPTFfUPe2",
-  "feat": ""
+  "feat": "ATL"
  },
  {
   "album": "6lankname 2",
@@ -396,21 +396,24 @@
   "artist": "BATO, SALUKI",
   "title": "Butaforia",
   "id": "3HGcfhVRWKXhXSHjOQisGI",
-  "feat": ""
+  "feat": "8nfra"
  },
  {
   "album": "6lankname 2",
   "artist": "BATO, SALUKI",
   "title": "Elegy",
   "id": "5SvigZuna1uFzieHWgEfpQ",
-  "feat": ""
+  "feat": [
+   "Lasilini",
+   "nomean"
+  ]
  },
  {
   "album": "Тет-а-тет",
   "artist": "Dose, Скриптонит",
   "title": "Фейерверк",
   "id": "5NnGWD31ZL8ZbrR6dKKfYS",
-  "feat": ""
+  "feat": "Скриптонит"
  },
  {
   "album": "Тет-а-тет",
@@ -438,14 +441,14 @@
   "artist": "Dose, Скриптонит",
   "title": "Запомню",
   "id": "70PNTIMIxciIUw01JH4hsm",
-  "feat": ""
+  "feat": "Kambulat"
  },
  {
   "album": "Тет-а-тет",
   "artist": "Dose, Скриптонит",
   "title": "Снова таешь",
   "id": "5cBswW5q8mEGeBuFOwGwb1",
-  "feat": ""
+  "feat": "NXN"
  },
  {
   "album": "Тет-а-тет",
@@ -459,7 +462,7 @@
   "artist": "T-Fest, OG Buda",
   "title": "reasons",
   "id": "5rNUeU3CkqVybefOk1lJVy",
-  "feat": ""
+  "feat": "OG Buda"
  },
  {
   "album": "The Europe Tapes",
@@ -480,7 +483,7 @@
   "artist": "T-Fest, OG Buda",
   "title": "rehab",
   "id": "2vlwWW5OZj59gzbE2g8cP2",
-  "feat": ""
+  "feat": "YASMI"
  },
  {
   "album": "The Europe Tapes",
@@ -501,7 +504,7 @@
   "artist": "DASHXX, The OM",
   "title": "Избавиться",
   "id": "2Uq82ISrDBbQg7MayNZbob",
-  "feat": ""
+  "feat": "The OM"
  },
  {
   "album": "Простая жизнь",
@@ -543,21 +546,21 @@
   "artist": "9mice, Kai Angel",
   "title": "Phoenix",
   "id": "4gypp6InByEhUi7ssgWtAx",
-  "feat": ""
+  "feat": "Kai Angel"
  },
  {
   "album": "Heavy Metal 2",
   "artist": "9mice, Kai Angel",
   "title": "2017",
   "id": "3JlIUrzdTsW3tpFiwYOpJJ",
-  "feat": ""
+  "feat": "Kai Angel"
  },
  {
   "album": "Heavy Metal 2",
   "artist": "9mice, Kai Angel",
   "title": "LMFAO",
   "id": "6tI91h38Iu4AFb34A07yS0",
-  "feat": ""
+  "feat": "Kai Angel"
  },
  {
   "album": "LOVESONGS",
