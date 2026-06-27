@@ -55,7 +55,7 @@
 .pf .pfnum b{color:#cf2c04;font-weight:800}
 .pf .pfcap{font-size:clamp(13px,2.4vw,20px);font-weight:700;color:#e6dede;margin-top:10px}
 .pf h1{font-family:'SaarSP',Arial,sans-serif;font-size:clamp(34px,6vw,58px);font-weight:400;line-height:.95;letter-spacing:0;margin:14px 0 12px}
-.pf .hero{position:relative;overflow:hidden;height:18px;margin:2px 0 30px;background:transparent}
+.pf .hero{position:relative;overflow:hidden;height:18px;margin:2px 0 40px;background:transparent}
 .pf .hero canvas{position:absolute;inset:0;display:block}
 .pf .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .pf .sub{font-size:16px;font-weight:700;color:#d8d0d0;max-width:520px;line-height:1.5;margin:0 0 32px}
@@ -99,7 +99,7 @@
 .pf .player iframe{flex:1;border:0;border-radius:12px}
 .pf .player .cl{background:transparent;border:0;color:#8f8888;font-size:24px;cursor:pointer;line-height:1;padding:4px 6px}
 @media (max-width:600px){
-.pf .hero{height:16px;margin-bottom:22px}
+.pf .hero{height:16px;margin-bottom:30px}
 .pf{padding:30px 14px 132px}
 .pf .pfnav{margin-bottom:28px}
 .pf .pfbrand{width:112px;height:30px}
@@ -414,11 +414,12 @@ function filt(b){
     ctx.save(); ctx.beginPath();
     var hs=H/100;
     var a=w.a*(0.35+0.65*level)*hs;
+    var yb=H/2 - 4*(1-level); // lift baseline in idle, settle to center when playing
     for(var x=0;x<=W;x+=2){
-      var dx=x-mouse.x, dy=H/2-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
+      var dx=x-mouse.x, dy=yb-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
       var infl=Math.max(0,1-dist/mRadius);
       var me=infl*mInfl*hs*Math.sin(t*0.0012+x*0.012+w.o)*level;
-      var y=H/2 + Math.sin(x*w.f+t*0.0022+w.o)*a + Math.sin(x*w.f*0.5+t*0.0031+w.o)*(a*0.4) + me;
+      var y=yb + Math.sin(x*w.f+t*0.0022+w.o)*a + Math.sin(x*w.f*0.5+t*0.0031+w.o)*(a*0.4) + me;
       x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
     }
     ctx.lineWidth=w.w; ctx.strokeStyle=w.c; ctx.globalAlpha=w.op*level;
