@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Generate the «кто свёл» reference: per-track SEO pages + grouped hub.
 
-Hub groups each artist's work into releases: albums (cover + year shown
-once, numbered tracklist) and singles (one row each). Track detail pages
-read like a factual catalogue entry, not marketing copy.
+Each track carries a credited role from roles.json (mix / mm / master):
+detail pages and schema state only what we actually did. The hub groups by
+primary (first-credited) artist with a canonical name, so an artist never
+appears as two sections (e.g. «Дима Билан» / «Dima Bilan»).
 """
 
 import html
@@ -16,8 +17,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 INDEX = ROOT / "index.html"
 TRACK_DIR = ROOT / "track"
+ROLES_FILE = ROOT / "roles.json"
 SITE = "https://credits.podlesnytwins.com"
 TODAY = date.today().isoformat()
+
+# canonical display name for spelling variants of the same artist
+CANON = {"Dima Bilan": "Дима Билан"}
+# «иностранный агент» artists — need * marker + footnote
+IA = {"morgenshtern"}
+
+ROLE_WORD = {"mm": "Сведение и мастеринг", "mix": "Сведение", "master": "Мастеринг"}
+ROLE_VERB = {"mm": "Кто свёл", "mix": "Кто свёл", "master": "Кто мастерил"}
 
 TRANSLIT = {
     "а": "a", "б": "b", "в": "v", "г": "g", "д": "d", "е": "e", "ё": "yo",
@@ -46,8 +56,31 @@ def slugify(*parts: str) -> str:
     return slug[:80] or "track"
 
 
-def extract_tracks(doc: str) -> list[dict]:
-    """Flat list of tracks. Album members carry their album name + year."""
+def canon(name: str) -> str:
+    """Canonical display name for a single artist token."""
+    n = name.replace("*", "").strip()
+    return CANON.get(n, n)
+
+
+def is_ia(name: str) -> bool:
+    return name.replace("*", "").strip().lower() in IA
+
+
+def primary_of(artist: str) -> str:
+    return canon(artist.split(", ")[0])
+
+
+def others_of(artist: str) -> list[str]:
+    return [canon(x) for x in artist.split(", ")[1:]]
+
+
+def load_roles() -> dict:
+    if ROLES_FILE.is_file():
+        return json.loads(ROLES_FILE.read_text(encoding="utf-8"))
+    return {}
+
+
+def extract_tracks(doc: str, roles: dict) -> list[dict]:
     tracks: list[dict] = []
     seen: set[str] = set()
 
@@ -63,12 +96,9 @@ def extract_tracks(doc: str) -> list[dict]:
             continue
         seen.add(tid)
         tracks.append({
-            "id": tid,
-            "img": img,
-            "artist": artist,
-            "title": html.unescape(title),
-            "year": html.unescape(year),
-            "album": "",
+            "id": tid, "img": img, "artist": artist,
+            "title": html.unescape(title), "year": html.unescape(year),
+            "album": "", "role": roles.get(tid, "mix"),
         })
 
     albums = json.loads(re.search(r"var ALBUMS=(\[.*?\]);", doc, re.S).group(1))
@@ -79,12 +109,9 @@ def extract_tracks(doc: str) -> list[dict]:
                 continue
             seen.add(tid)
             tracks.append({
-                "id": tid,
-                "img": album["cover"],
-                "artist": album["artist"],
-                "title": tr["title"],
-                "year": tr.get("year", ""),
-                "album": album["name"],
+                "id": tid, "img": album["cover"], "artist": album["artist"],
+                "title": tr["title"], "year": tr.get("year", ""),
+                "album": album["name"], "role": roles.get(tid, "mix"),
             })
 
     return tracks
@@ -103,28 +130,29 @@ def assign_slugs(tracks: list[dict]) -> None:
 
 def render_page(tr: dict) -> str:
     url = f"{SITE}/track/{tr['slug']}/"
+    role = tr["role"]
+    role_word = ROLE_WORD.get(role, "Сведение")
+    verb = ROLE_VERB.get(role, "Кто свёл")
     has_year = bool(tr.get("year")) and tr["year"] != "альбом"
     year_bit = f" ({tr['year']})" if has_year else ""
 
-    q = f"Кто свёл «{tr['title']}»?"
-    title = f"Кто свёл «{tr['title']}» — {tr['artist']} | Podlesny Twins"
+    q = f"{verb} «{tr['title']}»?"
+    title = f"{verb} «{tr['title']}» — {tr['artist']} | Podlesny Twins"
     desc = (
-        f"«{tr['title']}» ({tr['artist']}) — сведение и мастеринг "
+        f"«{tr['title']}» ({tr['artist']}) — {role_word.lower()}: "
         f"Podlesny Twins, Павел и Антон Подлесные."
     )
 
-    album_html = (
-        f' Из альбома «{esc(tr["album"])}».' if tr.get("album") else ""
-    )
+    album_html = f' Из альбома «{esc(tr["album"])}».' if tr.get("album") else ""
+    album_plain = f" Из альбома «{tr['album']}»." if tr.get("album") else ""
     lead = (
         f"«{esc(tr['title'])}»{year_bit} — {esc(tr['artist'])}. "
-        f"Сведение и мастеринг: <strong>Podlesny Twins</strong> "
+        f"{role_word}: <strong>Podlesny Twins</strong> "
         f"(Павел и Антон Подлесные).{album_html}"
     )
     answer_plain = (
-        f"«{tr['title']}»{year_bit} — {tr['artist']}. Сведение и мастеринг: "
-        f"Podlesny Twins (Павел и Антон Подлесные)."
-        + (f" Из альбома «{tr['album']}»." if tr.get("album") else "")
+        f"«{tr['title']}»{year_bit} — {tr['artist']}. {role_word}: "
+        f"Podlesny Twins (Павел и Антон Подлесные).{album_plain}"
     )
 
     schema = {
@@ -147,8 +175,7 @@ def render_page(tr: dict) -> str:
             {
                 "@type": "FAQPage",
                 "mainEntity": [{
-                    "@type": "Question",
-                    "name": q,
+                    "@type": "Question", "name": q,
                     "acceptedAnswer": {"@type": "Answer", "text": answer_plain},
                 }],
             },
@@ -164,8 +191,8 @@ def render_page(tr: dict) -> str:
         ],
     }
 
-    meta_line = esc(tr["artist"]) + (
-        f' · {esc(tr["year"])}' if has_year else ""
+    meta_line = f"{role_word} · {esc(tr['artist'])}" + (
+        f" · {esc(tr['year'])}" if has_year else ""
     )
 
     return f"""<!DOCTYPE html>
@@ -235,35 +262,42 @@ h1{{font-size:clamp(26px,5vw,38px);line-height:1.08;margin:0;font-weight:700;let
 """
 
 
-# ── hub (grouped reference) ──────────────────────────────────────────
-
-def _group_by_artist(tracks: list[dict]) -> "OrderedDict[str, dict]":
-    by_artist: "OrderedDict[str, dict]" = OrderedDict()
-    for tr in tracks:
-        g = by_artist.setdefault(tr["artist"], {"albums": OrderedDict(), "singles": []})
-        if tr.get("album"):
-            alb = g["albums"].setdefault(
-                tr["album"], {"year": tr.get("year", ""), "cover": tr["img"], "tracks": []}
-            )
-            alb["tracks"].append(tr)
-        else:
-            g["singles"].append(tr)
-    return by_artist
-
+# ── hub (grouped reference, deduped by primary artist) ───────────────
 
 def _dq(*parts: str) -> str:
     return esc(" ".join(p for p in parts if p).lower())
 
 
+def _feat(tr: dict) -> str:
+    o = others_of(tr["artist"])
+    return f'<span class="feat"> · с {esc(", ".join(o))}</span>' if o else ""
+
+
 def render_hub(tracks: list[dict]) -> str:
-    by_artist = _group_by_artist(tracks)
-    artists = sorted(by_artist, key=str.lower)
+    groups: "OrderedDict[str, dict]" = OrderedDict()
+    for tr in tracks:
+        key = primary_of(tr["artist"])
+        g = groups.setdefault(key, {"albums": OrderedDict(), "singles": [],
+                                     "ia": is_ia(tr["artist"].split(", ")[0])})
+        if tr.get("album"):
+            alb = g["albums"].setdefault(
+                tr["album"],
+                {"year": tr.get("year", ""), "cover": tr["img"],
+                 "tracks": [], "artist": tr["artist"]},
+            )
+            alb["tracks"].append(tr)
+        else:
+            g["singles"].append(tr)
+
+    artists = sorted(groups, key=str.lower)
+    any_ia = any(g["ia"] for g in groups.values())
 
     blocks = []
     prev_letter = ""
     for artist in artists:
-        g = by_artist[artist]
+        g = groups[artist]
         count = len(g["singles"]) + sum(len(a["tracks"]) for a in g["albums"].values())
+        ia_sup = '<sup class="ia">*</sup>' if g["ia"] else ""
 
         letter = artist[0].upper() if artist else "#"
         if letter != prev_letter:
@@ -271,11 +305,12 @@ def render_hub(tracks: list[dict]) -> str:
             blocks.append(f'<div class="letter">{esc(letter)}</div>')
 
         rels = []
-        # albums first (release order from ALBUMS)
         for name, alb in g["albums"].items():
+            feat = others_of(alb["artist"])
+            feat_html = f'<span class="feat"> · с {esc(", ".join(feat))}</span>' if feat else ""
             items = "".join(
                 f'<li><a href="/track/{esc(t["slug"])}/" '
-                f'data-q="{_dq(t["title"], artist, name)}">{esc(t["title"])}</a></li>'
+                f'data-q="{_dq(t["title"], t["artist"], name)}">{esc(t["title"])}</a></li>'
                 for t in alb["tracks"]
             )
             year = f'<span class="rel-year">{esc(alb["year"])}</span>' if alb["year"] else ""
@@ -285,19 +320,18 @@ def render_hub(tracks: list[dict]) -> str:
                 f'alt="{esc(name + " — " + artist)}" loading="lazy" width="56" height="56">'
                 '<div class="rel-body">'
                 f'<div class="rel-head"><span class="rel-name">«{esc(name)}»</span>{year}'
-                '<span class="rel-kind">альбом</span></div>'
+                f'<span class="rel-kind">альбом</span>{feat_html}</div>'
                 f'<ol class="trk-list">{items}</ol>'
                 "</div></div>"
             )
 
-        # singles
         if g["singles"]:
             label = '<div class="rel-label">Синглы</div>' if g["albums"] else ""
             rows = "".join(
                 f'<a class="sg" href="/track/{esc(t["slug"])}/" '
-                f'data-q="{_dq(t["title"], artist)}">'
+                f'data-q="{_dq(t["title"], t["artist"])}">'
                 f'<img src="{esc(t["img"])}" alt="" loading="lazy" width="40" height="40">'
-                f'<span class="sg-name">{esc(t["title"])}</span>'
+                f'<span class="sg-name">{esc(t["title"])}{_feat(t)}</span>'
                 + (f'<span class="sg-year">{esc(t["year"])}</span>'
                    if t.get("year") and t["year"] != "альбом" else "<span></span>")
                 + "</a>"
@@ -308,12 +342,11 @@ def render_hub(tracks: list[dict]) -> str:
         aid = slugify(artist) or "artist"
         blocks.append(
             f'<section class="art-sec" id="{esc(aid)}" data-artist="{esc(artist.lower())}">'
-            f'<header class="art-head"><h2>{esc(artist)}</h2>'
+            f'<header class="art-head"><h2>{esc(artist)}{ia_sup}</h2>'
             f'<span class="art-cnt">{count}</span></header>'
             f'{"".join(rels)}</section>'
         )
 
-    # alphabet jump nav
     seen_l: set[str] = set()
     jump_links = []
     for a in artists:
@@ -323,6 +356,10 @@ def render_hub(tracks: list[dict]) -> str:
         seen_l.add(L)
         jump_links.append(f'<a class="lj" href="#{esc(slugify(a) or "artist")}">{esc(L)}</a>')
 
+    ia_foot = (
+        '<p class="ia-foot">* признан(ы) в РФ иностранным агентом.</p>'
+        if any_ia else ""
+    )
     total = len(tracks)
     catalog = "".join(blocks)
     return f"""<!DOCTYPE html>
@@ -331,7 +368,7 @@ def render_hub(tracks: list[dict]) -> str:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Кто свёл — все треки Podlesny Twins</title>
-<meta name="description" content="Справочник работ Podlesny Twins: альбомы и синглы, которые свели и смастерили Павел и Антон Подлесные. {total} треков с поиском по артисту и названию.">
+<meta name="description" content="Справочник работ Podlesny Twins: альбомы и треки, над которыми работали Павел и Антон Подлесные (сведение и мастеринг). {total} треков с поиском по артисту и названию.">
 <link rel="canonical" href="{SITE}/track/">
 <link rel="icon" type="image/png" href="{SITE}/favicon.png">
 <style>
@@ -362,6 +399,7 @@ h1{{font-family:'SaarSP',Arial,sans-serif;font-weight:400;font-size:clamp(36px,7
 .art-sec:first-of-type,.letter + .art-sec{{border-top:0}}
 .art-head{{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}}
 .art-head h2{{margin:0;font-size:19px;font-weight:700;letter-spacing:-.01em}}
+.art-head sup{{font-size:11px;color:var(--mut2)}}
 .art-cnt{{font-size:12px;color:var(--mut2);font-variant-numeric:tabular-nums}}
 .rel{{padding:8px 0}}
 .rel.album{{display:flex;gap:14px}}
@@ -372,6 +410,7 @@ h1{{font-family:'SaarSP',Arial,sans-serif;font-weight:400;font-size:clamp(36px,7
 .rel-year{{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}}
 .rel-kind{{font-size:11px;color:var(--mut2);letter-spacing:.06em;text-transform:uppercase}}
 .rel-label{{font-size:13px;color:var(--mut);margin-bottom:4px}}
+.feat{{color:var(--mut2);font-weight:400}}
 .trk-list{{list-style:none;margin:0;padding:0;counter-reset:t;column-width:230px;column-gap:30px}}
 .trk-list li{{counter-increment:t;break-inside:avoid}}
 .trk-list a{{display:flex;gap:10px;padding:4px 0;font-size:14px;color:#d8d2d2;transition:color .12s}}
@@ -384,6 +423,7 @@ h1{{font-family:'SaarSP',Arial,sans-serif;font-weight:400;font-size:clamp(36px,7
 .sg-name{{font-size:14px;font-weight:500;min-width:0;transition:color .12s}}
 .sg-year{{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}}
 .sg:hover .sg-name{{color:var(--red)}}
+.ia-foot{{margin-top:40px;font-size:12px;color:var(--mut2)}}
 .hide{{display:none!important}}
 .empty{{display:none;text-align:center;padding:56px 20px;color:var(--mut);font-size:15px}}
 .empty.on{{display:block}}
@@ -403,7 +443,7 @@ h1{{font-family:'SaarSP',Arial,sans-serif;font-weight:400;font-size:clamp(36px,7
     <a class="pflink" href="https://podlesnytwins.com">Курс →</a>
   </div>
   <h1>Кто свёл</h1>
-  <p class="lead">Альбомы и синглы, которые мы свели и смастерили. Ищите по артисту, альбому или названию трека.</p>
+  <p class="lead">Альбомы и треки из нашего портфолио — сведение и мастеринг. Ищите по артисту, альбому или названию.</p>
   <div class="toolbar">
     <input class="search" id="q" type="search" placeholder="Артист, альбом или трек…" autocomplete="off">
     <span class="stat">{total} треков · {len(artists)} артистов</span>
@@ -411,6 +451,7 @@ h1{{font-family:'SaarSP',Arial,sans-serif;font-weight:400;font-size:clamp(36px,7
   <nav class="jump" aria-label="По алфавиту">{"".join(jump_links)}</nav>
   <div class="catalog" id="catalog">{catalog}</div>
   <p class="empty" id="empty">Ничего не нашлось</p>
+  {ia_foot}
 </div>
 <script>
 (function(){{
@@ -469,35 +510,25 @@ def write_sitemap(tracks: list[dict]) -> None:
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-        "  <url>",
-        f"    <loc>{SITE}/</loc>",
-        f"    <lastmod>{TODAY}</lastmod>",
-        "    <changefreq>weekly</changefreq>",
-        "    <priority>1.0</priority>",
-        "  </url>",
-        "  <url>",
-        f"    <loc>{SITE}/track/</loc>",
-        f"    <lastmod>{TODAY}</lastmod>",
-        "    <changefreq>weekly</changefreq>",
-        "    <priority>0.9</priority>",
-        "  </url>",
+        "  <url>", f"    <loc>{SITE}/</loc>", f"    <lastmod>{TODAY}</lastmod>",
+        "    <changefreq>weekly</changefreq>", "    <priority>1.0</priority>", "  </url>",
+        "  <url>", f"    <loc>{SITE}/track/</loc>", f"    <lastmod>{TODAY}</lastmod>",
+        "    <changefreq>weekly</changefreq>", "    <priority>0.9</priority>", "  </url>",
     ]
     for tr in tracks:
         lines += [
-            "  <url>",
-            f"    <loc>{SITE}/track/{tr['slug']}/</loc>",
-            f"    <lastmod>{TODAY}</lastmod>",
-            "    <changefreq>monthly</changefreq>",
-            "    <priority>0.7</priority>",
-            "  </url>",
+            "  <url>", f"    <loc>{SITE}/track/{tr['slug']}/</loc>",
+            f"    <lastmod>{TODAY}</lastmod>", "    <changefreq>monthly</changefreq>",
+            "    <priority>0.7</priority>", "  </url>",
         ]
     lines.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main() -> None:
+    roles = load_roles()
     doc = INDEX.read_text(encoding="utf-8")
-    tracks = extract_tracks(doc)
+    tracks = extract_tracks(doc, roles)
     assign_slugs(tracks)
 
     hub_file = TRACK_DIR / "index.html"
@@ -520,10 +551,9 @@ def main() -> None:
     INDEX.write_text(patch_index_footer(doc), encoding="utf-8")
 
     write_sitemap(tracks)
-    print(f"Сгенерировано страниц: {len(tracks)}")
-    print(f"Индекс: {SITE}/track/")
-    print(f"Пример: {SITE}/track/{tracks[0]['slug']}/")
-    print(f"Sitemap обновлён: {len(tracks) + 2} URL")
+    from collections import Counter
+    print(f"Сгенерировано страниц: {len(tracks)}  роли: {dict(Counter(t['role'] for t in tracks))}")
+    print(f"Артистов в хабе: {len(set(primary_of(t['artist']) for t in tracks))}")
 
 
 if __name__ == "__main__":
