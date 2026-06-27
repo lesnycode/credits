@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JWPH35TTVX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JWPH35TTVX');
+</script>
 <title>Podlesny Twins — сведение и мастеринг · портфолио работ</title>
 <meta name="google-site-verification" content="EXh8AKfS3KSqJQ0mKtHMbNHiGG2kpQ_0Madbcbg36A0">
 <meta name="description" content="Podlesny Twins — Павел Подлесный и Антон Подлесный, студия сведения и мастеринга. Работали над треками для Хаски, ЛСП, NAVAI, Дима Билан, MACAN, PIZZA, 9mice, T-Fest, Клавы Коки, Скриптонита и других — суммарно 2 млрд+ прослушиваний.">
@@ -502,5 +510,20 @@ function filt(b){
 </script>
 </div>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+<script>
+/* GA4 click events: Курс / Связаться / Условия */
+document.addEventListener('click', function(e){
+  if (typeof gtag !== 'function') return;
+  var t = e.target.closest('a, button');
+  if (!t) return;
+  if (t.id === 'pfcta') gtag('event', 'click_contact');
+  else if (t.id === 'pfterms') gtag('event', 'click_terms');
+  else if (t.matches('a.pflink:not(.pfworks)')) gtag('event', 'click_course');
+  else if (t.closest('#pfmenu')) {
+    var h = t.getAttribute('href') || '';
+    gtag('event', h.indexOf('podlesnyy') > -1 ? 'contact_anton' : 'contact_pavel');
+  }
+});
+</script>
 </body>
 </html>

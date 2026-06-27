@@ -28,6 +28,17 @@ CANON = {"Dima Bilan": "Дима Билан"}
 # «иностранный агент» artists — need * marker + footnote
 IA = {"morgenshtern"}
 
+GA_TAG = (
+    '<!-- Google tag (gtag.js) -->\n'
+    '<script async src="https://www.googletagmanager.com/gtag/js?id=G-JWPH35TTVX"></script>\n'
+    '<script>\n'
+    '  window.dataLayer = window.dataLayer || [];\n'
+    '  function gtag(){dataLayer.push(arguments);}\n'
+    "  gtag('js', new Date());\n"
+    "  gtag('config', 'G-JWPH35TTVX');\n"
+    '</script>'
+)
+
 ROLE_WORD = {"mm": "Сведение и мастеринг", "mix": "Сведение", "master": "Мастеринг"}
 ROLE_VERB = {"mm": "Кто свёл", "mix": "Кто свёл", "master": "Кто мастерил"}
 
@@ -238,6 +249,7 @@ def render_page(tr: dict) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{GA_TAG}
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <meta name="robots" content="index, follow">
@@ -417,6 +429,7 @@ def render_hub(tracks: list[dict]) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{GA_TAG}
 <title>Кто свёл — все треки Podlesny Twins</title>
 <meta name="description" content="Справочник работ Podlesny Twins: альбомы и треки, над которыми работали Павел и Антон Подлесные (сведение и мастеринг). {total} треков с поиском по артисту и названию.">
 <link rel="canonical" href="{SITE}/track/">
