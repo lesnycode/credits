@@ -135,6 +135,10 @@
 .pf .player{padding:8px 10px}
 .pf .player .inner{gap:8px}
 .pf .player .cl{font-size:22px}
+/* Footer actions stack on mobile so each dropdown centres on screen (was
+   overflowing the right edge when «Условия» sat on the right of a flex row) */
+.pf .pfactions{flex-direction:column;align-items:center;gap:22px}
+.pf .pfmenu{min-width:0;width:max-content;max-width:calc(100vw - 32px)}
 }
 
 .pf .seo-intro{font-size:15px;line-height:1.6;color:#b3aaaa;max-width:640px;margin:2px 0 30px}
