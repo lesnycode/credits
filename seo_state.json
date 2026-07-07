@@ -819,9 +819,66 @@
   "wokawna-vampir": {
    "hash": "f0f16552ccf34f3e",
    "lastmod": "2026-07-07"
+  },
+  "zavet-666": {
+   "hash": "6a2c09fb7b791e72",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-aot": {
+   "hash": "acb80c1eeabaad4b",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-belaya-letuchaya-mysh": {
+   "hash": "ff7a2e78fb9fff95",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-dead-people": {
+   "hash": "c3c84dc0a270c3fe",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-devil-jin": {
+   "hash": "1f199c10c8ce6b24",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-fluffy-biscuits-with-vanilla-kisses": {
+   "hash": "b6bab7c4d9e90f9d",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-i-buried-my-friends-alive": {
+   "hash": "859abf1c23edc837",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-iznasiluy-menya": {
+   "hash": "86b0a8020117e6e7",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-lilovye-glaza": {
+   "hash": "ceb8077d4b227ee7",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-paranoia": {
+   "hash": "e2dbc2dfc9856a81",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-personal-jesus": {
+   "hash": "776a1d823f8fbb78",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-run-away-with-me": {
+   "hash": "bf3ca2db2e44702f",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-salem-flow": {
+   "hash": "a74a9ef4fa4e30ff",
+   "lastmod": "2026-07-07"
+  },
+  "zavet-suspiria": {
+   "hash": "f9b65824d6ee6408",
+   "lastmod": "2026-07-07"
   }
  },
  "ids": {
+  "04HEHjrmGhJby0X8fsbyq2": "zavet-run-away-with-me",
   "04Mnbwn42ttJXIYwhH5Wn0": "hollyflame-polchasa",
   "06T7tZXdOpSaPmk2qGrT7x": "haski-dusha",
   "06WspmztVewxtKR9tUlNM6": "bato-saluki-many-lies",
@@ -859,6 +916,7 @@
   "1SrDJ8nwEeWuviXW2aiCI7": "wokawna-lyubi-menya",
   "1WH0FschcpubkesGgDRyGP": "hollyflame-zachem-plakala",
   "1WvAye8jnQwDltyyCl1DyL": "dose-skriptonit-tak-glupo",
+  "1feEXJPCrhS0OaZyxZ929l": "zavet-lilovye-glaza",
   "1g3rt0iKYun7DWdwSWKVoS": "qantreez-x-chels-it-s-true-demo-0-2",
   "1iLlMdvVmE9fPtqeUM7y8O": "iowa-andrey-katikov-krasnyy-svet",
   "1kdAGyILZa8zLSBnyMYyIu": "andrey-katikov-ostatsya-soboy",
@@ -867,7 +925,9 @@
   "1v1Imjrts3c7e2pXM1IsPz": "haski-byt-orkom",
   "1vHuiXncQSARvuUev2qs7p": "haski-limonka",
   "1wOk942J1A8MVxAssWRTIp": "bato-saluki-dada",
+  "1wx5gpi0WchgNJyhOzY5G5": "zavet-belaya-letuchaya-mysh",
   "20RRo7nktJtLw9DEtGB1zA": "tima-ischet-svet-loshadochka",
+  "22KosbVgK6DE7VO22GL70R": "zavet-dead-people",
   "254gBjtkq44NCALTbhft79": "navai-muzei-i-teatry",
   "25IfLOvP9DUpcLluLHg3hc": "haski-ptitsy",
   "291y18t6cDGzM00iaUcNhi": "macan-navai-neuzheli-eto-vse-lyubov",
@@ -881,12 +941,14 @@
   "2Rb1cDSbbO6Sx7CAsGEBWY": "dashxx-vykin-menya-iz-golovy",
   "2UIDsAiTOrHYx7MpykwFKb": "klava-koka-eschyo-lyublyu",
   "2Uq82ISrDBbQg7MayNZbob": "dashxx-the-om-izbavitsya",
+  "2WFffffysarSndrbJHDLul": "zavet-salem-flow",
   "2X2k5WD2CProLG4qqTVd3S": "t-fest-razbudi-menya",
   "2YsCIXWwvULLaAGC2641ep": "jeembo-headstone",
   "2cIozX8AmmR3qTjTnszVm8": "bato-saluki-noch-spit-dnem",
   "2dGNwlI0Nns1DulxW1bzGk": "tumaniyo-6micro",
   "2lJV3fgR5GF6MjYxcRq7yr": "ollane-hloy-do-for-love",
   "2ojrtEuygR9wzrQ65XXQYM": "haski-muzyka-ray",
+  "2tVTLX8BsfwlE1Awlvi3MK": "zavet-aot",
   "2vlwWW5OZj59gzbE2g8cP2": "t-fest-og-buda-rehab",
   "2wGRGOQDXsdnJCKljrSatn": "olya-krasnova-ne-uznayu",
   "2yLqeVFdcxPO44ekjswyXr": "hollyflame-mezhdu-strok",
@@ -907,8 +969,10 @@
   "3Ih9Ek8UrtjVE7ihoyvbvy": "hollyflame-rozovyy-rassvet",
   "3JlIUrzdTsW3tpFiwYOpJJ": "9mice-kai-angel-2017",
   "3L2CcpoH6cDKnCTf7QoErY": "tumaniyo-sushnyak",
+  "3TZV1OdJdNhaMNrhyJ11QH": "zavet-666",
   "3UESXHR0xmFsHH5TpgXlzO": "haski-zhivaya-voda",
   "3YpYzeTyWOYXilCaBTxBUT": "t-fest-davay-skonnektimsya",
+  "3aUMC1eHvzCpfNQuNaOtAI": "zavet-fluffy-biscuits-with-vanilla-kisses",
   "3b10i995Kg7VooIfoT4fg1": "didar-staratsya",
   "3bMVSeSOCkppgrhNZYMxZy": "morgenshtern-eeee",
   "3f0unrcNWyYTQBjS2yhQqM": "magic-man-spichki",
@@ -940,14 +1004,17 @@
   "4VSCVtuT2RVuxJhUGLG9YV": "haski-ya-boyus",
   "4WJF4W2nrSjOm3KT8yiBS7": "haski-tantsy-na-snegu",
   "4WwBvJYjELiYxa0f3DD7V0": "wokawna-vampir",
+  "4XbazBizd0YnkPQBvADfSy": "zavet-devil-jin",
   "4ZiaXptI1YRAG7S9WZtbtD": "navai-frikovaya-dama",
   "4cBLqLnJcp32V9WRwRa5b5": "lasilini-tveth-bato-kowloon",
   "4eZGm5ckebsiEbh1oaL4N4": "tumaniyo-palevo",
   "4gypp6InByEhUi7ssgWtAx": "9mice-kai-angel-phoenix",
   "4hEUqGTd9mRXWaz8Ux4MxY": "polina-offline-ne-doveryay",
+  "4hcDBOh8WpvozbToJXZNlS": "zavet-personal-jesus",
   "4kpQYWOneGXRRYSGZkPFK6": "didar-ya-rad",
   "4m6YQjVY8R15O21lNVJOFM": "eli-angel-haze-beautiful-tears",
   "4oX1d1QhZmVow2VSg6t3ju": "bato-saluki-high-vision",
+  "4uoFCqONHuQWJlLSMJS9H0": "zavet-i-buried-my-friends-alive",
   "4w8R5vnxd9VOGHjGYGZbYn": "haski-ya-obyavlyayu-vam-voynu",
   "51yAoF7iueFsC0IyBdbw3w": "bondar-poka-menya-net",
   "527D034h8WFtVDOBO6GAN5": "morgenshtern-poslednyaya-lyubov",
@@ -967,11 +1034,13 @@
   "5SvigZuna1uFzieHWgEfpQ": "bato-saluki-elegy",
   "5YYY1hBmplAIHVoBcZQ1dU": "pizza-zoloto",
   "5Yx5qUw2r1zT8uthKN2fI5": "haski-ya-hochu-byt-psom",
+  "5ZwBkGEZNCfrstiel8z4bb": "zavet-paranoia",
   "5aO5zHkWPTcTOIZdTt7GFE": "bandura-sam-ne-svoy",
   "5cBswW5q8mEGeBuFOwGwb1": "dose-skriptonit-snova-taesh",
   "5dcDCC8BwBindB8xHSETXW": "tima-ischet-svet-nelepaya-smert",
   "5f3TlwJWBIorcil5Tudbi9": "tumaniyo-zhdat",
   "5f5gkWntWNTTxbbh1Hp8tu": "t-fest-sovri-mne",
+  "5fqCkMen0sr2Bdwczttshd": "zavet-iznasiluy-menya",
   "5gPA08pZwDXJf3hIj0IXwV": "9mice-glaive-devo4ka",
   "5hrHr5u0v9KybrjPTsXCLv": "t-fest-og-buda-are-we-havin-fun-yet",
   "5neNdSi5BQLaVyGyP1kK3c": "meybi-beybi-so-hot",
@@ -1006,6 +1075,7 @@
   "6wWdnXHLGbZin5eS62ZjGc": "olya-krasnova-odni",
   "6x4exDcqsLKc15RtTbF63M": "glazami-illyuziya",
   "70PNTIMIxciIUw01JH4hsm": "dose-skriptonit-zapomnyu",
+  "71jOAwdA9LxUK39jbcy7CY": "zavet-suspiria",
   "72N7sZAdEubV3sY9uQCKQT": "lera-litvintseva-ostavaysya",
   "74BQyNYrCVi0m5eONkFJdM": "olya-krasnova-bessonnitsa",
   "74IY5jKYzsv2zjmmTPcpD2": "loc-dog-navai-ne-zakryvay",
