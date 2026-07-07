@@ -7,6 +7,7 @@ primary (first-credited) artist with a canonical name, so an artist never
 appears as two sections (e.g. «Дима Билан» / «Dima Bilan»).
 """
 
+import hashlib
 import html
 import json
 import re
@@ -20,6 +21,10 @@ TRACK_DIR = ROOT / "track"
 ROLES_FILE = ROOT / "roles.json"
 FEATS_FILE = ROOT / "feats.json"
 NOTES_FILE = ROOT / "notes.json"
+# persistent SEO ledger: last-known slug per track id, retired-slug redirects,
+# and honest per-slug lastmod. Keeps URLs alive + sitemap dates truthful across
+# full rebuilds. Committed to git so state survives between machines.
+SEO_STATE_FILE = ROOT / "seo_state.json"
 SITE = "https://credits.podlesnytwins.com"
 TODAY = date.today().isoformat()
 
@@ -569,7 +574,105 @@ def patch_index_footer(doc: str) -> str:
     return doc
 
 
-def write_sitemap(tracks: list[dict]) -> None:
+# ── SEO ledger: stable URLs + honest lastmod across full rebuilds ────
+
+def content_hash(tr: dict) -> str:
+    """Fingerprint the meaningful, user-visible content of a track page.
+
+    Ignores template/CSS churn on purpose — only real content changes
+    (title/artist/year/role/feat/album/cover/notes) bump the fingerprint,
+    so a cosmetic template edit doesn't reset every page's <lastmod>.
+    """
+    payload = json.dumps(
+        {
+            "artist": tr.get("artist", ""), "title": tr.get("title", ""),
+            "year": tr.get("year", ""), "role": tr.get("role", ""),
+            "feat": tr.get("feat", ""), "album": tr.get("album", ""),
+            "img": tr.get("img", ""), "notes": NOTES.get(tr.get("slug", ""), []),
+        },
+        ensure_ascii=False, sort_keys=True,
+    )
+    return hashlib.sha1(payload.encode("utf-8")).hexdigest()[:16]
+
+
+def render_redirect(target_slug: str) -> str:
+    """A retired slug's page: canonical + instant redirect to the live URL.
+
+    Google treats a same-host meta-refresh(0)+canonical as a 301, so link
+    equity from an old URL flows to the renamed track instead of 404-ing.
+    """
+    url = f"{SITE}/track/{target_slug}/"
+    return (
+        '<!DOCTYPE html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n'
+        f'<title>Переехало → {esc(target_slug)}</title>\n'
+        f'<link rel="canonical" href="{esc(url)}">\n'
+        f'<meta http-equiv="refresh" content="0; url={esc(url)}">\n'
+        f'<script>location.replace({json.dumps(url)});</script>\n'
+        f'</head>\n<body>\n<p>Страница переехала: <a href="{esc(url)}">{esc(url)}</a></p>\n'
+        '</body>\n</html>\n'
+    )
+
+
+def sync_seo_state(tracks: list[dict]) -> tuple[dict, dict]:
+    """Reconcile the persistent SEO ledger against the current track set.
+
+    Returns (lastmod_by_slug, redirects). A renamed track (same data-id,
+    new slug) retires its old slug into `redirects`; a removed track is
+    left to 404. Chains collapse to the final live slug; redirects whose
+    key is now a live slug or whose target is gone are dropped.
+    """
+    try:
+        state = json.loads(SEO_STATE_FILE.read_text(encoding="utf-8"))
+    except (FileNotFoundError, ValueError):
+        state = {}
+    prev_ids = state.get("ids", {})
+    prev_dates = state.get("dates", {})
+    redirects = dict(state.get("redirects", {}))
+
+    live_slugs = {tr["slug"] for tr in tracks}
+    cur_ids = {tr["id"]: tr["slug"] for tr in tracks}
+
+    # retire slugs of tracks that changed slug but still exist
+    for tid, old_slug in prev_ids.items():
+        new_slug = cur_ids.get(tid)
+        if new_slug and new_slug != old_slug:
+            redirects[old_slug] = new_slug
+
+    # collapse chains a→b→c into a→c
+    def resolve(slug: str, _seen: set) -> str:
+        while slug in redirects and slug not in _seen:
+            _seen.add(slug)
+            slug = redirects[slug]
+        return slug
+
+    redirects = {old: resolve(dst, {old}) for old, dst in redirects.items()}
+    # drop redirects that collide with a live page or point nowhere live
+    redirects = {
+        old: dst for old, dst in redirects.items()
+        if old not in live_slugs and dst in live_slugs
+    }
+
+    # honest lastmod: keep stored date unless content fingerprint changed
+    dates: dict[str, str] = {}
+    new_dates: dict[str, dict] = {}
+    for tr in tracks:
+        slug, h = tr["slug"], content_hash(tr)
+        prev = prev_dates.get(slug)
+        lastmod = prev["lastmod"] if prev and prev.get("hash") == h else TODAY
+        dates[slug] = lastmod
+        new_dates[slug] = {"hash": h, "lastmod": lastmod}
+
+    SEO_STATE_FILE.write_text(
+        json.dumps(
+            {"ids": cur_ids, "redirects": redirects, "dates": new_dates},
+            ensure_ascii=False, indent=1, sort_keys=True,
+        ) + "\n",
+        encoding="utf-8",
+    )
+    return dates, redirects
+
+
+def write_sitemap(tracks: list[dict], dates: dict) -> None:
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -581,7 +684,8 @@ def write_sitemap(tracks: list[dict]) -> None:
     for tr in tracks:
         lines += [
             "  <url>", f"    <loc>{SITE}/track/{tr['slug']}/</loc>",
-            f"    <lastmod>{TODAY}</lastmod>", "    <changefreq>monthly</changefreq>",
+            f"    <lastmod>{dates.get(tr['slug'], TODAY)}</lastmod>",
+            "    <changefreq>monthly</changefreq>",
             "    <priority>0.7</priority>", "  </url>",
         ]
     lines.append("</urlset>")
@@ -607,18 +711,31 @@ def main() -> None:
                 old.rmdir()
     TRACK_DIR.mkdir(exist_ok=True)
 
+    live_slugs = {tr["slug"] for tr in tracks}
     for tr in tracks:
         out = TRACK_DIR / tr["slug"]
         out.mkdir(parents=True, exist_ok=True)
         (out / "index.html").write_text(render_page(tr), encoding="utf-8")
 
+    # reconcile SEO ledger, then re-emit redirect stubs for retired slugs
+    # (the track/ wipe above deletes them each build, so rebuild from state)
+    dates, redirects = sync_seo_state(tracks)
+    for old_slug, new_slug in redirects.items():
+        if old_slug in live_slugs:
+            continue
+        out = TRACK_DIR / old_slug
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "index.html").write_text(render_redirect(new_slug), encoding="utf-8")
+
     hub_file.write_text(render_hub(tracks), encoding="utf-8")
     INDEX.write_text(patch_index_footer(doc), encoding="utf-8")
 
-    write_sitemap(tracks)
+    write_sitemap(tracks, dates)
     from collections import Counter
     print(f"Сгенерировано страниц: {len(tracks)}  роли: {dict(Counter(t['role'] for t in tracks))}")
     print(f"Артистов в хабе: {len(set(primary_of(t['artist']) for t in tracks))}")
+    if redirects:
+        print(f"Редиректы (retired slugs): {len(redirects)}")
 
 
 if __name__ == "__main__":
