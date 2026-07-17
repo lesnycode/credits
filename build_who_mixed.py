@@ -26,6 +26,11 @@ NOTES_FILE = ROOT / "notes.json"
 # full rebuilds. Committed to git so state survives between machines.
 SEO_STATE_FILE = ROOT / "seo_state.json"
 SITE = "https://credits.podlesnytwins.com"
+
+
+def abs_img(u):
+    """Site-relative cover paths -> absolute URLs for og:image / JSON-LD."""
+    return f"{SITE}{u}" if u.startswith("/") else u
 TODAY = date.today().isoformat()
 
 # canonical display name for spelling variants of the same artist
@@ -212,7 +217,7 @@ def render_page(tr: dict) -> str:
                 "@type": "MusicRecording",
                 "name": tr["title"],
                 "url": url,
-                "image": tr["img"],
+                "image": abs_img(tr["img"]),
                 "byArtist": {"@type": "MusicGroup", "name": tr["artist"]},
                 **({"inAlbum": {"@type": "MusicAlbum", "name": tr["album"]}}
                    if tr.get("album") else {}),
@@ -263,7 +268,7 @@ def render_page(tr: dict) -> str:
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{esc(url)}">
-<meta property="og:image" content="{esc(tr['img'])}">
+<meta property="og:image" content="{esc(abs_img(tr['img']))}">
 <meta property="og:locale" content="ru_RU">
 <link rel="icon" type="image/png" href="{SITE}/favicon.png">
 <script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>
