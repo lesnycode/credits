@@ -1,0 +1,66 @@
+name: IndexNow ping
+
+# On every push to main, tell IndexNow (Bing + Yandex, and thereby ChatGPT
+# Search) exactly which pages changed, so they re-crawl in hours, not weeks.
+# The key is public by design — it just proves we own the host via the
+# matching <key>.txt file served from the site root.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Build changed-URL list and submit to IndexNow
+        env:
+          KEY: 615302be8c461e369c0b4ee2b1f47398
+          HOST: credits.podlesnytwins.com
+        run: |
+          set -euo pipefail
+
+          # Changed .html files in this push -> site URLs.
+          # index.html -> /, faq/index.html -> /faq/, track/x/index.html -> /track/x/
+          mapfile -t urls < <(
+            git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" \
+              | grep -E '\.html$' \
+              | sed -E 's#(^|/)index\.html$#\1#; s#^#/#; s#//+#/#g' \
+              | sed -E "s#^#https://${HOST}#" \
+              | sort -u
+          )
+
+          if [ "${#urls[@]}" -eq 0 ]; then
+            echo "No HTML changes to submit."; exit 0
+          fi
+
+          echo "Submitting ${#urls[@]} URL(s):"
+          printf '%s\n' "${urls[@]}"
+
+          # IndexNow caps a batch at 10000 URLs; we are well under.
+          payload=$(jq -n \
+            --arg host "$HOST" \
+            --arg key "$KEY" \
+            --arg loc "https://${HOST}/${KEY}.txt" \
+            --argjson list "$(printf '%s\n' "${urls[@]}" | jq -R . | jq -s .)" \
+            '{host:$host, key:$key, keyLocation:$loc, urlList:$list}')
+
+          code=$(curl -sS -o /tmp/indexnow.out -w '%{http_code}' \
+            -X POST 'https://api.indexnow.org/indexnow' \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            --data "$payload")
+
+          echo "IndexNow HTTP $code"
+          cat /tmp/indexnow.out || true
+          # 200 and 202 are both success; anything else fails the job.
+          case "$code" in 200|202) : ;; *) exit 1 ;; esac
