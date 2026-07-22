@@ -301,6 +301,12 @@ h1{{font-size:clamp(26px,5vw,38px);line-height:1.08;margin:0;font-weight:700;let
 .back{{font-size:14px;color:var(--mut)}}
 .back a{{color:var(--red);font-weight:600}}
 .back a:hover{{text-decoration:underline}}
+.workinfo{{font-size:13px;color:var(--mut);margin:0 0 16px}}
+.workinfo a{{color:var(--red);font-weight:600}}
+.workinfo a:hover{{text-decoration:underline}}
+.trackfoot{{font-size:12px;color:var(--mut2);margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}}
+.trackfoot a{{color:var(--mut);font-weight:600}}
+.trackfoot a:hover{{color:var(--ink)}}
 </style>
 </head>
 <body>
@@ -321,7 +327,9 @@ h1{{font-size:clamp(26px,5vw,38px);line-height:1.08;margin:0;font-weight:700;let
   <div class="embed">
     <iframe src="https://open.spotify.com/embed/track/{esc(tr['id'])}?utm_source=generator" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Слушать «{esc(tr['title'])}»"></iframe>
   </div>
-  <p class="back"><a href="{SITE}/track/">← Все треки</a> · <a href="{SITE}/faq/#order">Сколько стоит сведение?</a></p>
+  <p class="workinfo">Условия работы: <a href="{SITE}/faq/#what-to-send">что прислать, чтобы заказать сведение</a> · <a href="{SITE}/faq/#order">цены, сроки и правки</a></p>
+  <p class="back"><a href="{SITE}/track/">← Все треки</a></p>
+  <p class="trackfoot"><a href="{SITE}/faq/">Вопросы и ответы</a> · <a href="https://t.me/lesnymix" rel="noopener">Канал о звуке</a> · <a href="https://t.me/+VXgXHnAXj9w2ZGYy" rel="noopener">Чат</a></p>
 </div>
 </body>
 </html>
@@ -525,6 +533,11 @@ h1{{font-family:'SaarSP',Arial,sans-serif;font-weight:400;font-size:clamp(36px,7
 .sg-year{{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}}
 .sg:hover .sg-name{{color:var(--red)}}
 .ia-foot{{margin-top:40px;font-size:12px;color:var(--mut2)}}
+.hublead{{font-size:14px;color:var(--mut);max-width:58ch;margin:10px 0 0}}
+.hublead a{{color:var(--red);font-weight:600}}
+.hubfoot{{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--mut2)}}
+.hubfoot a{{color:var(--mut);font-weight:600}}
+.hubfoot a:hover{{color:var(--ink)}}
 .hide{{display:none!important}}
 .empty{{display:none;text-align:center;padding:56px 20px;color:var(--mut);font-size:15px}}
 .empty.on{{display:block}}
@@ -545,6 +558,7 @@ h1{{font-family:'SaarSP',Arial,sans-serif;font-weight:400;font-size:clamp(36px,7
   </div>
   <h1>Кто свёл</h1>
   <p class="lead">Альбомы и треки из нашего портфолио — сведение и мастеринг. Ищите по артисту, альбому или названию.</p>
+  <p class="hublead">Полный каталог работ студии. Условия заказа сведения и мастеринга — в разделе <a href="{SITE}/faq/">вопросов и ответов</a>.</p>
   <div class="toolbar">
     <input class="search" id="q" type="search" placeholder="Артист, альбом или трек…" autocomplete="off">
     <span class="stat">{total} треков · {len(artists)} артистов</span>
@@ -553,6 +567,7 @@ h1{{font-family:'SaarSP',Arial,sans-serif;font-weight:400;font-size:clamp(36px,7
   <div class="catalog" id="catalog">{catalog}</div>
   <p class="empty" id="empty">Ничего не нашлось</p>
   {ia_foot}
+  <p class="hubfoot"><a href="{SITE}/faq/">Вопросы и ответы</a> · <a href="https://t.me/lesnymix" rel="noopener">Канал о звуке</a> · <a href="https://t.me/+VXgXHnAXj9w2ZGYy" rel="noopener">Чат</a></p>
 </div>
 <script>
 (function(){{
@@ -601,11 +616,16 @@ def patch_index_footer(doc: str) -> str:
     if ".pf .seo-foot" not in doc:
         doc = doc.replace("</style>", css + "</style>", 1)
 
-    # Both the catalogue and the FAQ hang off the home page footer. Guard by
-    # class, not exact string, so a hand-tweaked footer isn't duplicated.
+    # The home-page footer links out to the catalogue, the FAQ, and the
+    # studio's Telegram channel + chat. Replace the whole <p class="seo-foot">
+    # in place (idempotent) so re-runs update it instead of duplicating.
     foot = ('<p class="seo-foot"><a href="/track/">Полный список треков</a>'
-            ' · <a href="/faq/">Вопросы и ответы</a></p>')
-    if 'class="seo-foot"' not in doc:
+            ' · <a href="/faq/">Вопросы и ответы</a>'
+            ' · <a href="https://t.me/lesnymix" rel="noopener">Канал о звуке</a>'
+            ' · <a href="https://t.me/+VXgXHnAXj9w2ZGYy" rel="noopener">Чат</a></p>')
+    if 'class="seo-foot"' in doc:
+        doc = re.sub(r'<p class="seo-foot">.*?</p>', foot, doc, count=1, flags=re.S)
+    else:
         doc = doc.replace('<p class="iadisc">', foot + "\n    " + '<p class="iadisc">', 1)
     return doc
 
