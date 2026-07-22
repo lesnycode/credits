@@ -33,6 +33,10 @@ def abs_img(u):
     return f"{SITE}{u}" if u.startswith("/") else u
 TODAY = date.today().isoformat()
 
+# /faq/ is a hand-written page, not generated from track data. Bump this when the
+# FAQ text itself changes — a rebuild must not fake freshness for untouched copy.
+FAQ_LASTMOD = "2026-07-22"
+
 # canonical display name for spelling variants of the same artist
 CANON = {"Dima Bilan": "Дима Билан"}
 # «иностранный агент» artists — need * marker + footnote
@@ -685,6 +689,10 @@ def write_sitemap(tracks: list[dict], dates: dict) -> None:
         "    <changefreq>weekly</changefreq>", "    <priority>1.0</priority>", "  </url>",
         "  <url>", f"    <loc>{SITE}/track/</loc>", f"    <lastmod>{TODAY}</lastmod>",
         "    <changefreq>weekly</changefreq>", "    <priority>0.9</priority>", "  </url>",
+        # /faq/ is hand-written (not generated from tracks) — its lastmod must reflect
+        # when the FAQ text actually changed, not every rebuild. Bump FAQ_LASTMOD by hand.
+        "  <url>", f"    <loc>{SITE}/faq/</loc>", f"    <lastmod>{FAQ_LASTMOD}</lastmod>",
+        "    <changefreq>monthly</changefreq>", "    <priority>0.8</priority>", "  </url>",
     ]
     for tr in tracks:
         lines += [
