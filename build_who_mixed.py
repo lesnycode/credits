@@ -321,7 +321,7 @@ h1{{font-size:clamp(26px,5vw,38px);line-height:1.08;margin:0;font-weight:700;let
   <div class="embed">
     <iframe src="https://open.spotify.com/embed/track/{esc(tr['id'])}?utm_source=generator" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Слушать «{esc(tr['title'])}»"></iframe>
   </div>
-  <p class="back"><a href="{SITE}/track/">← Все треки</a></p>
+  <p class="back"><a href="{SITE}/track/">← Все треки</a> · <a href="{SITE}/faq/#order">Сколько стоит сведение?</a></p>
 </div>
 </body>
 </html>
@@ -438,6 +438,29 @@ def render_hub(tracks: list[dict]) -> str:
     )
     total = len(tracks)
     catalog = "".join(blocks)
+
+    # ItemList of the whole catalogue — one structured list an answer engine
+    # can read as "these are the works", plus breadcrumbs. Reuses the site's
+    # existing #podlesnytwins entity id.
+    item_ld = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "CollectionPage", "@id": f"{SITE}/track/#webpage",
+             "url": f"{SITE}/track/",
+             "name": "Кто свёл — все треки Podlesny Twins",
+             "isPartOf": {"@id": f"{SITE}/#podlesnytwins"}},
+            {"@type": "ItemList", "numberOfItems": total, "itemListOrder": "https://schema.org/ItemListUnordered",
+             "itemListElement": [
+                 {"@type": "ListItem", "position": i,
+                  "url": f"{SITE}/track/{t['slug']}/",
+                  "name": f"{t['title']} — {t['artist']}"}
+                 for i, t in enumerate(tracks, 1)]},
+            {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Портфолио", "item": f"{SITE}/"},
+                {"@type": "ListItem", "position": 2, "name": "Все треки", "item": f"{SITE}/track/"}]},
+        ],
+    }
+    item_ld_json = json.dumps(item_ld, ensure_ascii=False)
     return f"""<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -448,6 +471,7 @@ def render_hub(tracks: list[dict]) -> str:
 <meta name="description" content="Справочник работ Podlesny Twins: альбомы и треки, над которыми работали Павел и Антон Подлесные (сведение и мастеринг). {total} треков с поиском по артисту и названию.">
 <link rel="canonical" href="{SITE}/track/">
 <link rel="icon" type="image/png" href="{SITE}/favicon.png">
+<script type="application/ld+json">{item_ld_json}</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
 @font-face{{font-family:'SaarSP';src:url('https://static.tildacdn.com/tild6565-6366-4065-b536-663938373766/SaarSPDemo.WOFF') format('woff');font-weight:400;font-display:swap}}
@@ -577,8 +601,11 @@ def patch_index_footer(doc: str) -> str:
     if ".pf .seo-foot" not in doc:
         doc = doc.replace("</style>", css + "</style>", 1)
 
-    foot = '<p class="seo-foot"><a href="/track/">Полный список треков</a></p>'
-    if foot not in doc:
+    # Both the catalogue and the FAQ hang off the home page footer. Guard by
+    # class, not exact string, so a hand-tweaked footer isn't duplicated.
+    foot = ('<p class="seo-foot"><a href="/track/">Полный список треков</a>'
+            ' · <a href="/faq/">Вопросы и ответы</a></p>')
+    if 'class="seo-foot"' not in doc:
         doc = doc.replace('<p class="iadisc">', foot + "\n    " + '<p class="iadisc">', 1)
     return doc
 
